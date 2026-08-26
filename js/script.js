@@ -2,13 +2,15 @@
   "use strict";
 
   /* =========================================================
-     CONFIG
+     CONFIG & CONSTANTS
   ========================================================= */
   const FRAME_COUNT = 100;
-  const FRAME_PATH = (i) => `../assets/coffee/frame   (${i}).webp`;
+  const FRAME_PATH = (i) => `./assets/coffee/frame   (${i}).webp`;
   const MAX_DPR = 2;
+  const PRELOAD_TIMEOUT_MS = 4000;
 
   const canvas = document.getElementById("coffeeCanvas");
+  if (!canvas) return;
   const ctx = canvas.getContext("2d", { alpha: false });
 
   const loader = document.getElementById("loader");
@@ -26,14 +28,16 @@
   let loadedCount = 0;
   let currentFrame = 0;
   let targetFrame = 0;
+  let displayedFrame = 0;
   let dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
   let viewportW = window.innerWidth;
   let viewportH = window.innerHeight;
-  let ticking = false;
+  let isAnimating = false;
+  let lastDrawnIndex = -1;
   let ready = false;
 
   /* =========================================================
-     CANVAS SIZE
+     CANVAS SIZE & DPR
   ========================================================= */
   function resizeCanvas() {
     viewportW = window.innerWidth;
@@ -46,17 +50,37 @@
     canvas.style.height = viewportH + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-    drawFrame(currentFrame, true);
+    drawFrame(Math.round(displayedFrame), true);
   }
 
   /* =========================================================
-     DRAW — cover-style crop, like background-size: cover
+     FIND NEAREST LOADED FRAME
+  ========================================================= */
+  function getBestAvailableFrame(index) {
+    index = Math.max(0, Math.min(FRAME_COUNT - 1, index));
+    const direct = images[index];
+    if (direct && direct.complete && direct.naturalWidth > 0) {
+      return direct;
+    }
+    // Search outwards for nearest loaded frame
+    for (let offset = 1; offset < FRAME_COUNT; offset++) {
+      const prev = images[index - offset];
+      if (prev && prev.complete && prev.naturalWidth > 0) return prev;
+      const next = images[index + offset];
+      if (next && next.complete && next.naturalWidth > 0) return next;
+    }
+    return null;
+  }
+
+  /* =========================================================
+     DRAW — Cover-style cropping
   ========================================================= */
   function drawFrame(index, force) {
-    const img = images[index];
-    if (!img || !img.complete || img.naturalWidth === 0) return;
+    index = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(index)));
     if (!force && index === lastDrawnIndex) return;
+
+    const img = getBestAvailableFrame(index);
+    if (!img) return;
 
     const imgRatio = img.naturalWidth / img.naturalHeight;
     const viewRatio = viewportW / viewportH;
@@ -64,13 +88,11 @@
     let drawW, drawH, offsetX, offsetY;
 
     if (imgRatio > viewRatio) {
-      // image is wider than viewport -> match height, crop sides
       drawH = viewportH;
       drawW = drawH * imgRatio;
       offsetX = (viewportW - drawW) / 2;
       offsetY = 0;
     } else {
-      // image is taller than viewport -> match width, crop top/bottom
       drawW = viewportW;
       drawH = drawW / imgRatio;
       offsetX = 0;
@@ -82,27 +104,46 @@
     ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
     lastDrawnIndex = index;
   }
-  let lastDrawnIndex = -1;
 
   /* =========================================================
-     PRELOAD
+     PRELOAD IMAGES
   ========================================================= */
   function preloadImages() {
     return new Promise((resolve) => {
       let settled = 0;
+      let hasResolved = false;
 
-      const onSettle = () => {
+      const finish = () => {
+        if (!hasResolved) {
+          hasResolved = true;
+          resolve();
+        }
+      };
+
+      // Safeguard: don't block the site indefinitely on slow network
+      const timeoutId = window.setTimeout(finish, PRELOAD_TIMEOUT_MS);
+
+      const onSettle = (idx) => {
         settled++;
         loadedCount = settled;
         updateLoaderUI();
-        if (settled >= FRAME_COUNT) resolve();
+
+        // If the initial frame loaded, render it right away
+        if (idx === 1 && lastDrawnIndex === -1) {
+          drawFrame(0, true);
+        }
+
+        if (settled >= FRAME_COUNT) {
+          window.clearTimeout(timeoutId);
+          finish();
+        }
       };
 
       for (let i = 1; i <= FRAME_COUNT; i++) {
         const img = new Image();
         img.decoding = "async";
-        img.onload = onSettle;
-        img.onerror = onSettle; // don't block loading on a missing frame
+        img.onload = () => onSettle(i);
+        img.onerror = () => onSettle(i);
         img.src = FRAME_PATH(i);
         images[i - 1] = img;
       }
@@ -110,12 +151,14 @@
   }
 
   function updateLoaderUI() {
+    if (!loaderBar || !loaderPercent) return;
     const pct = Math.round((loadedCount / FRAME_COUNT) * 100);
     loaderBar.style.width = pct + "%";
     loaderPercent.textContent = pct + "%";
   }
 
   function hideLoader() {
+    if (!loader) return;
     loader.style.opacity = "0";
     loader.style.pointerEvents = "none";
     window.setTimeout(() => {
@@ -124,7 +167,7 @@
   }
 
   /* =========================================================
-     SCROLL -> FRAME MAPPING
+     SCROLL -> FRAME MAPPING & LERP ANIMATION
   ========================================================= */
   function getScrollProgress() {
     const scrollHeight =
@@ -134,40 +177,59 @@
     return Math.min(Math.max(progress, 0), 1);
   }
 
-  function onScroll() {
-    if (prefersReducedMotion) return;
-    const progress = getScrollProgress();
-    targetFrame = Math.round(progress * (FRAME_COUNT - 1));
-
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(renderLoop);
-    }
+  function startAnimationLoop() {
+    if (isAnimating) return;
+    isAnimating = true;
+    window.requestAnimationFrame(renderLoop);
   }
 
   function renderLoop() {
-    ticking = false;
-    if (targetFrame !== currentFrame) {
-      currentFrame = targetFrame;
-      drawFrame(currentFrame, false);
+    const diff = targetFrame - displayedFrame;
+    if (Math.abs(diff) < 0.05) {
+      displayedFrame = targetFrame;
+      drawFrame(displayedFrame, false);
+      isAnimating = false;
+      return;
     }
+
+    displayedFrame += diff * 0.18;
+    drawFrame(displayedFrame, false);
+    window.requestAnimationFrame(renderLoop);
+  }
+
+  function onScroll() {
+    if (prefersReducedMotion || !ready) return;
+    const progress = getScrollProgress();
+    targetFrame = progress * (FRAME_COUNT - 1);
+    startAnimationLoop();
   }
 
   /* =========================================================
-     RESIZE (debounced via rAF)
+     RESIZE HANDLER
   ========================================================= */
   let resizeQueued = false;
+  let lastW = window.innerWidth;
+  let lastH = window.innerHeight;
+
   function onResize() {
     if (resizeQueued) return;
+    const newW = window.innerWidth;
+    const newH = window.innerHeight;
+
+    // Ignore tiny vertical jitter on mobile address bar show/hide
+    if (newW === lastW && Math.abs(newH - lastH) < 80) return;
+
     resizeQueued = true;
     window.requestAnimationFrame(() => {
       resizeQueued = false;
+      lastW = window.innerWidth;
+      lastH = window.innerHeight;
       resizeCanvas();
     });
   }
 
   /* =========================================================
-     MOBILE MENU
+     MOBILE MENU & ACCESSIBILITY
   ========================================================= */
   function initMobileMenu() {
     const toggle = document.getElementById("menuToggle");
@@ -194,15 +256,69 @@
       }
     }
 
-    toggle.addEventListener("click", () => setOpen(!open));
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      setOpen(!open);
+    });
 
     menu.querySelectorAll("a").forEach((link) => {
       link.addEventListener("click", () => setOpen(false));
     });
 
-    window.addEventListener("resize", () => {
-      if (open) menu.style.maxHeight = menu.scrollHeight + "px";
+    // Close when clicking outside
+    document.addEventListener("click", (e) => {
+      if (open && !menu.contains(e.target) && !toggle.contains(e.target)) {
+        setOpen(false);
+      }
     });
+
+    // Close on Escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && open) {
+        setOpen(false);
+        toggle.focus();
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (open && window.innerWidth >= 768) {
+        setOpen(false);
+      }
+    });
+  }
+
+  /* =========================================================
+     ACTIVE NAVIGATION (SCROLLSPY)
+  ========================================================= */
+  function initScrollSpy() {
+    const sections = document.querySelectorAll("section[id], footer[id]");
+    const navLinks = document.querySelectorAll(".nav-link, .mobile-link");
+    if (!sections.length || !navLinks.length) return;
+
+    function updateActiveLink() {
+      const scrollPos = window.scrollY + 120;
+      let currentId = "";
+
+      sections.forEach((section) => {
+        const top = section.offsetTop;
+        const height = section.offsetHeight;
+        if (scrollPos >= top && scrollPos < top + height) {
+          currentId = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach((link) => {
+        const href = link.getAttribute("href");
+        if (href && currentId && href.replace("#", "") === currentId) {
+          link.classList.add("active-nav");
+        } else {
+          link.classList.remove("active-nav");
+        }
+      });
+    }
+
+    window.addEventListener("scroll", updateActiveLink, { passive: true });
+    updateActiveLink();
   }
 
   /* =========================================================
@@ -224,7 +340,7 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
     );
 
     targets.forEach((el) => observer.observe(el));
@@ -237,13 +353,14 @@
     resizeCanvas();
     initMobileMenu();
     initReveal();
+    initScrollSpy();
 
     await preloadImages();
 
     ready = true;
     currentFrame = prefersReducedMotion ? FRAME_COUNT - 1 : 0;
     targetFrame = currentFrame;
-    lastDrawnIndex = -1;
+    displayedFrame = currentFrame;
     drawFrame(currentFrame, true);
 
     hideLoader();
@@ -256,5 +373,9 @@
     window.addEventListener("resize", onResize);
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();

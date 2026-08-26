@@ -2,11 +2,16 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Aro. — Specialty Coffee</title>
     <meta
       name="description"
       content="Aro. is a specialty coffee house crafted for the curious — carefully sourced beans, roasted with intention, served with care."
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d79a5a'%3E%3Cpath d='M2 21h18v-2H2M20 8h-2V5h2m0-2H4v10a4 4 0 004 4h6a4 4 0 004-4v-3h2a2 2 0 002-2V5a2 2 0 00-2-2Z'/%3E%3C/svg%3E"
     />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -18,11 +23,11 @@
 
     <link rel="stylesheet" href="./src/output.css" />
   </head>
-  <body class="bg-ink text-cream font-body antialiased">
+  <body class="bg-ink text-cream font-body antialiased selection:bg-gold selection:text-ink">
     <!-- ============ LOADER ============ -->
     <div
       id="loader"
-      class="fixed inset-0 z-200 flex flex-col items-center justify-center bg-ink transition-opacity duration-700 ease-out"
+      class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-ink transition-opacity duration-700 ease-out"
     >
       <p class="font-display text-2xl tracking-[0.15em] text-cream mb-6">
         ARO.
@@ -48,20 +53,20 @@
 
     <!-- subtle universal overlay for legibility, kept very light -->
     <div
-      class="pointer-events-none fixed inset-0 z-[-5] bg-linear-to-b from-ink/10 via-transparent to-ink/30"
+      class="pointer-events-none fixed inset-0 -z-[5] bg-linear-to-b from-ink/10 via-transparent to-ink/30"
     ></div>
 
     <div class="relative z-10">
       <!-- ============ HEADER ============ -->
       <header
-        class="fixed top-0 inset-x-0 z-100 bg-black/20 backdrop-blur-md border-b border-white/10"
+        class="fixed top-0 inset-x-0 z-[100] bg-ink/60 backdrop-blur-md border-b border-white/10 transition-all duration-300"
       >
         <div
           class="max-w-7xl mx-auto px-5 sm:px-8 h-16 sm:h-20 flex items-center justify-between"
         >
           <a
             href="#top"
-            class="font-display text-xl sm:text-2xl tracking-widest text-cream"
+            class="font-display text-xl sm:text-2xl tracking-widest text-cream hover:text-gold-light transition-colors"
             >ARO.</a
           >
 
@@ -83,7 +88,7 @@
             aria-label="Open menu"
             aria-expanded="false"
             aria-controls="mobileMenu"
-            class="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group"
+            class="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group cursor-pointer"
           >
             <span
               class="hamburger-line block w-6 h-px bg-cream transition-transform duration-300"
@@ -100,7 +105,7 @@
         <!-- mobile nav -->
         <div
           id="mobileMenu"
-          class="md:hidden max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-black/50 backdrop-blur-md border-b border-white/10"
+          class="md:hidden max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-ink/95 backdrop-blur-xl border-b border-white/10 shadow-2xl"
         >
           <nav class="flex flex-col px-6 py-6 gap-5 text-lg">
             <a href="#story" class="mobile-link">Story</a>
@@ -119,7 +124,7 @@
           <div class="max-w-7xl mx-auto w-full">
             <p class="eyebrow mb-5 reveal">Specialty Coffee</p>
             <h1
-              class="font-display font-light leading-[0.95] text-[15vw] sm:text-[9vw] lg:text-[6.5vw] tracking-tight reveal"
+              class="font-display font-light leading-[0.95] text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] tracking-tight reveal"
             >
               Crafted<br class="hidden sm:block" />
               for the<br class="hidden sm:block" />
@@ -221,19 +226,19 @@
                 <ul class="space-y-5">
                   <li class="menu-row">
                     <span>Espresso</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;3.20</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.20</span>
                   </li>
                   <li class="menu-row">
                     <span>Cappuccino</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.20</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.20</span>
                   </li>
                   <li class="menu-row">
                     <span>Flat White</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.00</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.00</span>
                   </li>
                   <li class="menu-row">
                     <span>Macchiato</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;3.60</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.60</span>
                   </li>
                 </ul>
               </div>
@@ -243,19 +248,19 @@
                 <ul class="space-y-5">
                   <li class="menu-row">
                     <span>V60 Pour Over</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.40</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.40</span>
                   </li>
                   <li class="menu-row">
                     <span>Cold Brew</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.50</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.50</span>
                   </li>
                   <li class="menu-row">
                     <span>Batch Filter</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;3.40</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.40</span>
                   </li>
                   <li class="menu-row">
                     <span>AeroPress</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.10</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.10</span>
                   </li>
                 </ul>
               </div>
@@ -265,16 +270,16 @@
                 <ul class="space-y-5">
                   <li class="menu-row">
                     <span>Signature Latte</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.80</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.80</span>
                   </li>
                   <li class="menu-row">
                     <span>Honey Oat Flat White</span
                     ><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.90</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.90</span>
                   </li>
                   <li class="menu-row">
                     <span>Maple Cortado</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;4.60</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.60</span>
                   </li>
                 </ul>
               </div>
@@ -284,15 +289,15 @@
                 <ul class="space-y-5">
                   <li class="menu-row">
                     <span>Almond Croissant</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;3.80</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.80</span>
                   </li>
                   <li class="menu-row">
                     <span>Pain au Chocolat</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;3.50</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.50</span>
                   </li>
                   <li class="menu-row">
                     <span>Cardamom Bun</span><span class="menu-dots"></span
-                    ><span class="text-gold-light">&pound;3.60</span>
+                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.60</span>
                   </li>
                 </ul>
               </div>
@@ -328,8 +333,8 @@
             <p class="eyebrow mb-14 sm:mb-20 text-center reveal">
               What people say
             </p>
-            <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
-              <blockquote class="glass-card rounded-2xl p-8 reveal">
+            <div class="grid md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+              <blockquote class="glass-card rounded-2xl p-8 flex flex-col justify-between h-full reveal">
                 <p class="font-display text-lg sm:text-xl leading-relaxed mb-6">
                   &ldquo;The best coffee experience I've had in years.&rdquo;
                 </p>
@@ -337,7 +342,7 @@
                   >&mdash; Sarah M.</cite
                 >
               </blockquote>
-              <blockquote class="glass-card rounded-2xl p-8 reveal">
+              <blockquote class="glass-card rounded-2xl p-8 flex flex-col justify-between h-full reveal">
                 <p class="font-display text-lg sm:text-xl leading-relaxed mb-6">
                   &ldquo;Every visit feels intentional. Slow, warm, and never
                   rushed.&rdquo;
@@ -346,7 +351,7 @@
                   >&mdash; Daniel K.</cite
                 >
               </blockquote>
-              <blockquote class="glass-card rounded-2xl p-8 reveal">
+              <blockquote class="glass-card rounded-2xl p-8 flex flex-col justify-between h-full reveal">
                 <p class="font-display text-lg sm:text-xl leading-relaxed mb-6">
                   &ldquo;A rare place where the coffee is as good as the
                   room.&rdquo;
@@ -376,7 +381,7 @@
       <!-- ============ FOOTER ============ -->
       <footer
         id="contact"
-        class="relative bg-black/40 backdrop-blur-md border-t border-white/10 px-5 sm:px-8 py-16"
+        class="relative bg-ink/75 backdrop-blur-lg border-t border-white/10 px-5 sm:px-8 py-16"
       >
         <div class="max-w-7xl mx-auto grid sm:grid-cols-3 gap-10 sm:gap-8">
           <div>
