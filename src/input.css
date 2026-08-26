@@ -1,0 +1,179 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #0b0806;
+  --color-cream: #f4ebdd;
+  --color-coffee: #6f4328;
+  --color-gold: #c88a4a;
+  --color-gold-light: #d79a5a;
+
+  --font-display: "Fraunces", "Georgia", serif;
+  --font-body: "Inter", "Helvetica Neue", Arial, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+  }
+
+  ::selection {
+    background-color: var(--color-gold);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-light);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .glass-panel {
+    background-color: rgb(11 8 6 / 0.35);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgb(244 235 221 / 0.1);
+  }
+
+  .glass-card {
+    background-color: rgb(11 8 6 / 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgb(244 235 221 / 0.08);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, background-color 0.4s ease;
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    border-color: rgb(200 138 74 / 0.4);
+    background-color: rgb(11 8 6 / 0.45);
+  }
+
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1.9rem;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-radius: 999px;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.35s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    background-color: var(--color-gold-light);
+  }
+
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.8rem;
+    border: 1px solid rgb(244 235 221 / 0.35);
+    color: var(--color-cream);
+    border-radius: 999px;
+    transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, background-color 0.35s ease;
+  }
+
+  .btn-ghost:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-gold-light);
+    background-color: rgb(244 235 221 / 0.06);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  .nav-link {
+    position: relative;
+    color: var(--color-cream);
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0%;
+    height: 1px;
+    background-color: var(--color-gold-light);
+    transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  .mobile-link {
+    color: var(--color-cream);
+    letter-spacing: 0.02em;
+  }
+
+  .footer-link {
+    color: rgb(244 235 221 / 0.7);
+    transition: color 0.3s ease;
+    width: fit-content;
+  }
+
+  .footer-link:hover {
+    color: var(--color-gold-light);
+  }
+
+  .menu-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-size: 1.05rem;
+    color: rgb(244 235 221 / 0.9);
+  }
+
+  .menu-dots {
+    flex: 1 1 auto;
+    border-bottom: 1px dotted rgb(244 235 221 / 0.25);
+    height: 0;
+    transform: translateY(-4px);
+  }
+}
