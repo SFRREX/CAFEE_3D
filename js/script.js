@@ -229,20 +229,46 @@
   }
 
   /* =========================================================
-     MOBILE MENU & ACCESSIBILITY
+     HEADER SCROLL STATE
+  ========================================================= */
+  function initHeaderScroll() {
+    const header = document.querySelector("header");
+    if (!header) return;
+
+    function checkHeader() {
+      if (window.scrollY > 25) {
+        header.classList.add("header-scrolled");
+      } else {
+        header.classList.remove("header-scrolled");
+      }
+    }
+
+    window.addEventListener("scroll", checkHeader, { passive: true });
+    checkHeader();
+  }
+
+  /* =========================================================
+     FULLSCREEN MOBILE DRAWER & ACCESSIBILITY
   ========================================================= */
   function initMobileMenu() {
     const toggle = document.getElementById("menuToggle");
-    const menu = document.getElementById("mobileMenu");
-    if (!toggle || !menu) return;
+    const drawer = document.getElementById("mobileDrawer");
+    if (!toggle || !drawer) return;
 
     let open = false;
 
     function setOpen(next) {
       open = next;
       toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-      menu.style.maxHeight = open ? menu.scrollHeight + "px" : "0px";
+      toggle.setAttribute("aria-label", open ? "Close navigation menu" : "Open navigation menu");
+
+      if (open) {
+        drawer.classList.add("drawer-open");
+        document.body.style.overflow = "hidden";
+      } else {
+        drawer.classList.remove("drawer-open");
+        document.body.style.overflow = "";
+      }
 
       const lines = toggle.querySelectorAll(".hamburger-line");
       if (lines.length === 3) {
@@ -250,6 +276,7 @@
           ? "translateY(7px) rotate(45deg)"
           : "translateY(0) rotate(0)";
         lines[1].style.opacity = open ? "0" : "1";
+        lines[1].style.transform = open ? "scaleX(0)" : "scaleX(1)";
         lines[2].style.transform = open
           ? "translateY(-7px) rotate(-45deg)"
           : "translateY(0) rotate(0)";
@@ -261,15 +288,26 @@
       setOpen(!open);
     });
 
-    menu.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => setOpen(false));
-    });
-
-    // Close when clicking outside
-    document.addEventListener("click", (e) => {
-      if (open && !menu.contains(e.target) && !toggle.contains(e.target)) {
+    drawer.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href");
         setOpen(false);
-      }
+
+        if (href && href.startsWith("#")) {
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            const headerOffset = 70;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: "smooth"
+            });
+          }
+        }
+      });
     });
 
     // Close on Escape key
@@ -281,7 +319,7 @@
     });
 
     window.addEventListener("resize", () => {
-      if (open && window.innerWidth >= 768) {
+      if (open && window.innerWidth >= 1024) {
         setOpen(false);
       }
     });
@@ -292,7 +330,7 @@
   ========================================================= */
   function initScrollSpy() {
     const sections = document.querySelectorAll("section[id], footer[id]");
-    const navLinks = document.querySelectorAll(".nav-link, .mobile-link");
+    const navLinks = document.querySelectorAll(".nav-link, .drawer-link");
     if (!sections.length || !navLinks.length) return;
 
     function updateActiveLink() {
@@ -340,10 +378,90 @@
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.05, rootMargin: "0px 0px -15px 0px" }
     );
 
     targets.forEach((el) => observer.observe(el));
+  }
+
+  /* =========================================================
+     TOAST NOTIFICATIONS
+  ========================================================= */
+  function showToast(title, message, duration = 4000) {
+    let toast = document.getElementById("toastNotification");
+    if (!toast) return;
+
+    const titleEl = document.getElementById("toastTitle");
+    const msgEl = document.getElementById("toastMessage");
+
+    if (titleEl) titleEl.textContent = title;
+    if (msgEl) msgEl.textContent = message;
+
+    toast.classList.add("toast-show");
+
+    if (window._toastTimeout) {
+      window.clearTimeout(window._toastTimeout);
+    }
+
+    window._toastTimeout = window.setTimeout(() => {
+      toast.classList.remove("toast-show");
+    }, duration);
+  }
+
+  /* =========================================================
+     NEWSLETTER FORM
+  ========================================================= */
+  function initNewsletter() {
+    const form = document.getElementById("newsletterForm");
+    if (!form) return;
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const input = form.querySelector("input[type='email']");
+      if (!input || !input.value.trim()) return;
+
+      const email = input.value.trim();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showToast("Invalid Email", "Please enter a valid email address.", 3000);
+        input.focus();
+        return;
+      }
+
+      showToast(
+        "Welcome to the Aro Club!",
+        "Check your inbox for your 15% welcome code & brewing guides."
+      );
+      input.value = "";
+      input.blur();
+    });
+  }
+
+  /* =========================================================
+     LIVE CAFÉ OPEN / CLOSED STATUS
+  ========================================================= */
+  function initLiveStatus() {
+    const statusText = document.getElementById("liveStatusText");
+    const statusDot = document.getElementById("liveStatusDot");
+    if (!statusText || !statusDot) return;
+
+    const now = new Date();
+    const day = now.getDay(); // 0 = Sun, 6 = Sat
+    const hour = now.getHours();
+    const isWeekend = day === 0 || day === 6;
+
+    const openHour = isWeekend ? 8 : 7;
+    const closeHour = isWeekend ? 18 : 19;
+
+    const isOpen = hour >= openHour && hour < closeHour;
+
+    if (isOpen) {
+      statusDot.className = "pulse-dot";
+      statusText.textContent = `Open Now • Closes at ${closeHour > 12 ? closeHour - 12 + ":00 PM" : closeHour + ":00 AM"}`;
+    } else {
+      statusDot.className = "inline-flex w-2 h-2 rounded-full bg-amber-500/80";
+      statusText.textContent = `Closed • Opens at ${openHour}:00 AM`;
+    }
   }
 
   /* =========================================================
@@ -352,8 +470,11 @@
   async function init() {
     resizeCanvas();
     initMobileMenu();
+    initHeaderScroll();
     initReveal();
     initScrollSpy();
+    initNewsletter();
+    initLiveStatus();
 
     await preloadImages();
 

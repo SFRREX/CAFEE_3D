@@ -3,11 +3,67 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Aro. — Specialty Coffee</title>
+    <title>Aro. — Specialty Coffee House & Micro-Roastery</title>
     <meta
       name="description"
-      content="Aro. is a specialty coffee house crafted for the curious — carefully sourced beans, roasted with intention, served with care."
+      content="Aro. is an independent specialty coffee house and micro-roastery crafted for the curious — ethical sourcing, intentional roasting, and precision brewing in London."
     />
+    <meta name="keywords" content="specialty coffee, micro-roastery, London coffee shop, pour over, single origin beans, artisan bakery, third wave coffee" />
+    <meta name="theme-color" content="#0b0806" />
+    <meta name="author" content="Aro Coffee House" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aro.coffee/" />
+    <meta property="og:title" content="Aro. — Specialty Coffee House & Micro-Roastery" />
+    <meta property="og:description" content="Crafted for the curious. Carefully sourced single-origin beans, roasted with intention, served with care." />
+    <meta property="og:image" content="https://aro.coffee/assets/og-image.jpg" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Aro. — Specialty Coffee House" />
+    <meta property="twitter:description" content="Carefully sourced single-origin beans, roasted with intention, served with care." />
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CafeOrCoffeeShop",
+      "name": "Aro. Specialty Coffee",
+      "image": "https://aro.coffee/assets/og-image.jpg",
+      "description": "Specialty coffee house crafted for the curious — ethically sourced beans, small-batch roasted, served with precision.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "14 Mill Lane",
+        "addressLocality": "London",
+        "postalCode": "NW6 1NT",
+        "addressCountry": "GB"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 51.5512,
+        "longitude": -0.1983
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "07:00",
+          "closes": "19:00"
+        },
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Saturday", "Sunday"],
+          "opens": "08:00",
+          "closes": "18:00"
+        }
+      ],
+      "priceRange": "££",
+      "servesCuisine": "Specialty Coffee, Artisan Pastries",
+      "telephone": "+44 20 7946 0912"
+    }
+    </script>
+
     <link
       rel="icon"
       type="image/svg+xml"
@@ -17,7 +73,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -27,13 +83,13 @@
     <!-- ============ LOADER ============ -->
     <div
       id="loader"
-      class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-ink transition-opacity duration-700 ease-out"
+      class="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-ink transition-opacity duration-700 ease-out px-6"
     >
       <p class="font-display text-2xl tracking-[0.15em] text-cream mb-6">
         ARO.
       </p>
-      <p id="loaderText" class="eyebrow mb-8">Preparing your coffee&hellip;</p>
-      <div class="w-56 sm:w-72 h-px bg-cream/15 relative overflow-hidden">
+      <p id="loaderText" class="eyebrow mb-8 text-center">Preparing your coffee&hellip;</p>
+      <div class="w-full max-w-xs sm:max-w-sm h-px bg-cream/15 relative overflow-hidden">
         <div
           id="loaderBar"
           class="absolute inset-y-0 left-0 bg-gold-light"
@@ -51,329 +107,691 @@
       class="pointer-events-none fixed inset-0 -z-10 h-full w-full"
     ></canvas>
 
-    <!-- subtle universal overlay for legibility, kept very light -->
+    <!-- universal subtle overlay for high contrast legibility -->
     <div
-      class="pointer-events-none fixed inset-0 -z-[5] bg-linear-to-b from-ink/10 via-transparent to-ink/30"
+      class="pointer-events-none fixed inset-0 -z-[5] bg-linear-to-b from-ink/20 via-transparent to-ink/40"
     ></div>
 
     <div class="relative z-10">
       <!-- ============ HEADER ============ -->
       <header
-        class="fixed top-0 inset-x-0 z-[100] bg-ink/60 backdrop-blur-md border-b border-white/10 transition-all duration-300"
+        class="fixed top-0 inset-x-0 z-[100] bg-ink/40 backdrop-blur-md border-b border-white/10 transition-all duration-300"
       >
         <div
-          class="max-w-7xl mx-auto px-5 sm:px-8 h-16 sm:h-20 flex items-center justify-between"
+          class="max-w-7xl mx-auto px-5 sm:px-8 h-16 lg:h-20 flex items-center justify-between gap-4"
         >
           <a
             href="#top"
-            class="font-display text-xl sm:text-2xl tracking-widest text-cream hover:text-gold-light transition-colors"
+            class="font-display text-xl sm:text-2xl tracking-widest text-cream hover:text-gold-light transition-colors shrink-0"
             >ARO.</a
           >
 
-          <nav class="hidden md:flex items-center gap-10 text-sm tracking-wide">
-            <a href="#story" class="nav-link">Story</a>
-            <a href="#menu" class="nav-link">Menu</a>
-            <a href="#about" class="nav-link">About</a>
-            <a href="#contact" class="nav-link">Contact</a>
+          <nav class="hidden lg:flex items-center gap-6 xl:gap-8 text-xs xl:text-sm tracking-wider uppercase shrink-0">
+            <a href="#story" class="nav-link whitespace-nowrap">Story</a>
+            <a href="#craft" class="nav-link whitespace-nowrap">Craft</a>
+            <a href="#menu" class="nav-link whitespace-nowrap">Menu</a>
+            <a href="#visit" class="nav-link whitespace-nowrap">Visit &amp; Hours</a>
+            <a href="#reviews" class="nav-link whitespace-nowrap">Reviews</a>
           </nav>
 
-          <a
-            href="#menu"
-            class="hidden md:inline-flex btn-ghost text-sm py-2.5! px-5!"
-            >Explore the menu</a
-          >
+          <div class="hidden lg:flex items-center gap-3 xl:gap-4 shrink-0">
+            <a
+              href="#club"
+              class="btn-ghost text-xs xl:text-sm py-2! px-3.5! xl:py-2.5! xl:px-5! whitespace-nowrap"
+              >Coffee Club</a
+            >
+            <a
+              href="#menu"
+              class="btn-primary text-xs xl:text-sm py-2! px-4! xl:py-2.5! xl:px-5! whitespace-nowrap"
+              >Explore Menu</a
+            >
+          </div>
 
           <button
             id="menuToggle"
-            aria-label="Open menu"
+            aria-label="Open navigation menu"
             aria-expanded="false"
-            aria-controls="mobileMenu"
-            class="md:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group cursor-pointer"
+            aria-controls="mobileDrawer"
+            class="lg:hidden relative w-11 h-11 flex flex-col items-center justify-center gap-1.5 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 active:scale-95 transition-all cursor-pointer z-[110] shrink-0"
           >
             <span
-              class="hamburger-line block w-6 h-px bg-cream transition-transform duration-300"
+              class="hamburger-line block w-5 h-0.5 bg-cream rounded-full transition-all duration-300 ease-out origin-center"
             ></span>
             <span
-              class="hamburger-line block w-6 h-px bg-cream transition-opacity duration-300"
+              class="hamburger-line block w-5 h-0.5 bg-cream rounded-full transition-all duration-300 ease-out origin-center"
             ></span>
             <span
-              class="hamburger-line block w-6 h-px bg-cream transition-transform duration-300"
+              class="hamburger-line block w-5 h-0.5 bg-cream rounded-full transition-all duration-300 ease-out origin-center"
             ></span>
           </button>
         </div>
+      </header>
 
-        <!-- mobile nav -->
-        <div
-          id="mobileMenu"
-          class="md:hidden max-h-0 overflow-hidden transition-[max-height] duration-500 ease-in-out bg-ink/95 backdrop-blur-xl border-b border-white/10 shadow-2xl"
-        >
-          <nav class="flex flex-col px-6 py-6 gap-5 text-lg">
-            <a href="#story" class="mobile-link">Story</a>
-            <a href="#menu" class="mobile-link">Menu</a>
-            <a href="#about" class="mobile-link">About</a>
-            <a href="#contact" class="mobile-link">Contact</a>
+      <!-- ============ FULLSCREEN MOBILE DRAWER ============ -->
+      <div
+        id="mobileDrawer"
+        class="mobile-drawer lg:hidden flex flex-col justify-between px-6 pt-24 pb-8 overflow-y-auto"
+        aria-hidden="true"
+      >
+        <div class="flex flex-col">
+          <p class="eyebrow mb-4 text-cream/40">Navigation</p>
+          <nav class="flex flex-col">
+            <a href="#story" class="drawer-link">
+              <span class="drawer-link-num">01</span>
+              <span>Our Story</span>
+            </a>
+            <a href="#craft" class="drawer-link">
+              <span class="drawer-link-num">02</span>
+              <span>The Craft</span>
+            </a>
+            <a href="#menu" class="drawer-link">
+              <span class="drawer-link-num">03</span>
+              <span>The Menu</span>
+            </a>
+            <a href="#visit" class="drawer-link">
+              <span class="drawer-link-num">04</span>
+              <span>Visit &amp; Hours</span>
+            </a>
+            <a href="#reviews" class="drawer-link">
+              <span class="drawer-link-num">05</span>
+              <span>Testimonials</span>
+            </a>
+            <a href="#club" class="drawer-link text-gold-light">
+              <span class="drawer-link-num">06</span>
+              <span>Coffee Club</span>
+            </a>
           </nav>
         </div>
-      </header>
+
+        <div class="mt-8 pt-6 border-t border-white/10 flex flex-col gap-4">
+          <div class="flex flex-col gap-3">
+            <a href="#menu" class="btn-primary w-full text-center py-3">Explore The Menu</a>
+            <a href="#visit" class="btn-ghost w-full text-center py-3">Visit Café &bull; 14 Mill Lane</a>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between text-xs text-cream/50 pt-2 gap-2 text-center">
+            <span>Mon–Fri 7am–7pm &bull; Sat–Sun 8am–6pm</span>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="text-gold-light hover:underline">@aro.coffee</a>
+          </div>
+        </div>
+      </div>
 
       <main id="top">
         <!-- ============ HERO ============ -->
         <section
-          class="relative min-h-screen flex items-end sm:items-center px-5 sm:px-8 pb-16 sm:pb-0 pt-28"
+          class="relative min-h-[100svh] flex items-center px-5 sm:px-8 pt-24 pb-16 sm:py-0 overflow-hidden"
         >
-          <div class="max-w-7xl mx-auto w-full">
-            <p class="eyebrow mb-5 reveal">Specialty Coffee</p>
+          <div class="max-w-7xl mx-auto w-full relative z-10">
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-ink/60 border border-white/15 backdrop-blur-md mb-6 reveal shadow-lg">
+              <span class="pulse-dot"></span>
+              <span class="eyebrow text-[0.65rem] sm:text-[0.7rem] !text-cream/90">Micro-Roastery &amp; Espresso Bar &bull; London</span>
+            </div>
+
             <h1
-              class="font-display font-light leading-[0.95] text-5xl sm:text-7xl md:text-8xl lg:text-[6.5rem] tracking-tight reveal"
+              class="font-display font-light leading-[0.95] text-4xl sm:text-6xl md:text-7xl lg:text-[6.5rem] tracking-tight reveal drop-shadow-md"
             >
               Crafted<br class="hidden sm:block" />
               for the<br class="hidden sm:block" />
               curious.
             </h1>
             <p
-              class="mt-6 sm:mt-8 max-w-md text-base sm:text-lg text-cream/80 reveal"
+              class="mt-5 sm:mt-8 max-w-lg text-sm sm:text-base md:text-lg text-cream/85 leading-relaxed reveal drop-shadow-sm"
             >
-              From carefully selected beans to a cup worth slowing down for.
+              Ethically sourced single-origin micro-lots, roasted with intention in small batches, and extracted with scientific precision.
             </p>
-            <div class="mt-8 sm:mt-10 flex flex-wrap items-center gap-4 reveal">
-              <a href="#menu" class="btn-primary">Explore the menu</a>
-              <a href="#story" class="btn-ghost">Our story</a>
+            <div class="mt-7 sm:mt-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4 reveal w-full sm:w-auto">
+              <a href="#menu" class="btn-primary text-center w-full sm:w-auto">Explore the menu</a>
+              <a href="#craft" class="btn-ghost text-center w-full sm:w-auto">Our craft &amp; process</a>
             </div>
           </div>
 
           <div
-            class="hidden sm:flex absolute bottom-10 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-cream/50"
+            class="hidden sm:flex absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-cream/50 pointer-events-none z-10"
           >
             <span class="text-[0.65rem] tracking-[0.3em] uppercase"
-              >Scroll</span
+              >Scroll to explore</span
             >
-            <span class="w-px h-10 bg-cream/30"></span>
+            <span class="w-px h-8 bg-cream/30"></span>
           </div>
         </section>
 
         <!-- ============ ABOUT / STORY ============ -->
-        <section id="story" class="relative py-28 sm:py-40 px-5 sm:px-8">
-          <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-10 lg:gap-16">
+        <section id="story" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
+          <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch">
             <div
-              class="lg:col-span-7 glass-panel rounded-2xl p-8 sm:p-12 reveal"
+              class="lg:col-span-7 glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 reveal flex flex-col justify-between"
             >
-              <p class="eyebrow mb-4">Our Story</p>
+              <div>
+                <p class="eyebrow mb-3 sm:mb-4">Our Ritual</p>
+                <h2
+                  class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-4 sm:mb-6"
+                >
+                  Coffee is more<br />than a drink.<br />It's a ritual.
+                </h2>
+                <p
+                  class="text-cream/80 text-sm sm:text-base lg:text-lg leading-relaxed mb-4"
+                >
+                  We founded Aro on a simple conviction: great coffee should never be rushed. We travel directly to origin farms in Yirgacheffe, Huila, and Antigua to partner with growers who prioritize regenerative agriculture and unparalleled flavor.
+                </p>
+                <p
+                  class="text-cream/70 text-xs sm:text-sm lg:text-base leading-relaxed"
+                >
+                  Every lot is roasted locally in micro-batches to highlight terroir, sweetness, and complexity — then brewed with mineral-balanced water calibrated specifically for each harvest.
+                </p>
+              </div>
+
+              <div class="mt-6 sm:mt-8 pt-6 border-t border-white/10 flex flex-wrap items-center gap-2.5 sm:gap-4">
+                <span class="badge-chip">Direct Trade</span>
+                <span class="badge-chip">Specialty Grade 86+</span>
+                <span class="badge-chip">Small Batch</span>
+              </div>
+            </div>
+
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3.5 sm:gap-6">
+              <div
+                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+              >
+                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                  12+
+                </p>
+                <p class="mt-2 text-xs sm:text-sm text-cream/80 tracking-wide font-medium">Single Origins</p>
+                <p class="mt-1 text-[0.7rem] sm:text-xs text-cream/40">Ethically Partnered</p>
+              </div>
+              <div
+                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+              >
+                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                  8
+                </p>
+                <p class="mt-2 text-xs sm:text-sm text-cream/80 tracking-wide font-medium">
+                  Profiles
+                </p>
+                <p class="mt-1 text-[0.7rem] sm:text-xs text-cream/40">Light to Medium-Dark</p>
+              </div>
+              <div
+                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+              >
+                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                  100%
+                </p>
+                <p class="mt-2 text-xs sm:text-sm text-cream/80 tracking-wide font-medium">
+                  Direct Trade
+                </p>
+                <p class="mt-1 text-[0.7rem] sm:text-xs text-cream/40">Fair Living Wages</p>
+              </div>
+              <div
+                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+              >
+                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                  4.9★
+                </p>
+                <p class="mt-2 text-xs sm:text-sm text-cream/80 tracking-wide font-medium">
+                  Community
+                </p>
+                <p class="mt-1 text-[0.7rem] sm:text-xs text-cream/40">Over 1,200 Reviews</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ CRAFT / PROCESS ============ -->
+        <section id="craft" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 reveal">
+              <p class="eyebrow mb-3 sm:mb-4">The Process</p>
               <h2
-                class="font-display font-light text-3xl sm:text-4xl lg:text-5xl leading-tight mb-6"
+                class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4"
               >
-                Coffee is more<br />than a drink.<br />It's a ritual.
+                From Soil to Cup.
               </h2>
-              <p
-                class="text-cream/75 text-base sm:text-lg leading-relaxed max-w-xl"
-              >
-                We source exceptional beans, roast them with intention, and
-                serve every cup with care. Every step, from farm to filter, is a
-                decision made in favor of flavor.
+              <p class="text-cream/75 text-sm sm:text-base lg:text-lg">
+                Three deliberate stages that define the Aro standard.
               </p>
             </div>
 
-            <div class="lg:col-span-5 grid grid-cols-2 gap-4 sm:gap-6">
-              <div
-                id="about"
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-center reveal"
-              >
-                <p class="font-display text-4xl sm:text-5xl text-gold-light">
-                  12+
-                </p>
-                <p class="mt-2 text-sm text-cream/70 tracking-wide">Origins</p>
+            <div class="grid md:grid-cols-3 gap-5 sm:gap-8">
+              <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal">
+                <div>
+                  <span class="font-display text-2xl sm:text-3xl text-gold-light/70 font-light block mb-3 sm:mb-4">01</span>
+                  <h3 class="font-display text-lg sm:text-2xl text-cream mb-2 sm:mb-3">High-Altitude Sourcing</h3>
+                  <p class="text-xs sm:text-sm lg:text-base text-cream/70 leading-relaxed">
+                    We select strictly high-grown Arabica (1,700m–2,200m ASL) where slow bean maturation yields concentrated sugars, vibrant acidity, and distinctive floral notes.
+                  </p>
+                </div>
+                <div class="mt-5 sm:mt-6 pt-4 border-t border-white/10 flex flex-wrap gap-2">
+                  <span class="badge-chip">Geisha &bull; Bourbon &bull; Typica</span>
+                </div>
               </div>
-              <div
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-center reveal"
-              >
-                <p class="font-display text-4xl sm:text-5xl text-gold-light">
-                  8
-                </p>
-                <p class="mt-2 text-sm text-cream/70 tracking-wide">
-                  Signature Roasts
-                </p>
+
+              <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal">
+                <div>
+                  <span class="font-display text-2xl sm:text-3xl text-gold-light/70 font-light block mb-3 sm:mb-4">02</span>
+                  <h3 class="font-display text-lg sm:text-2xl text-cream mb-2 sm:mb-3">Precision Roasting</h3>
+                  <p class="text-xs sm:text-sm lg:text-base text-cream/70 leading-relaxed">
+                    Using infrared drum roasters with real-time rate-of-rise profiling, each lot is roasted gently to preserve the bean's intrinsic terroir without smoky bitterness.
+                  </p>
+                </div>
+                <div class="mt-5 sm:mt-6 pt-4 border-t border-white/10 flex flex-wrap gap-2">
+                  <span class="badge-chip">Clean Profile</span>
+                  <span class="badge-chip">Zero Char</span>
+                </div>
               </div>
-              <div
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-center col-span-2 reveal"
-              >
-                <p class="font-display text-4xl sm:text-5xl text-gold-light">
-                  100%
-                </p>
-                <p class="mt-2 text-sm text-cream/70 tracking-wide">
-                  Crafted With Care
-                </p>
+
+              <div class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal">
+                <div>
+                  <span class="font-display text-2xl sm:text-3xl text-gold-light/70 font-light block mb-3 sm:mb-4">03</span>
+                  <h3 class="font-display text-lg sm:text-2xl text-cream mb-2 sm:mb-3">Calibrated Extraction</h3>
+                  <p class="text-xs sm:text-sm lg:text-base text-cream/70 leading-relaxed">
+                    Reverse-osmosis water remineralized with magnesium and calcium, dialed in with 0.1g dose precision and variable pressure profiling on bespoke espresso gear.
+                  </p>
+                </div>
+                <div class="mt-5 sm:mt-6 pt-4 border-t border-white/10 flex flex-wrap gap-2">
+                  <span class="badge-chip">19.5% Ideal Yield</span>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         <!-- ============ MENU ============ -->
-        <section id="menu" class="relative py-28 sm:py-40 px-5 sm:px-8">
+        <section id="menu" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
           <div
-            class="max-w-6xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-8 sm:p-12 lg:p-16 reveal"
+            class="max-w-6xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-5 sm:p-10 lg:p-14 reveal"
           >
-            <div class="max-w-xl mb-12 sm:mb-16">
-              <p class="eyebrow mb-4">The Menu</p>
-              <h2
-                class="font-display font-light text-3xl sm:text-4xl lg:text-5xl leading-tight"
-              >
-                A cup for every mood.
-              </h2>
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-14 gap-4 sm:gap-6">
+              <div class="max-w-xl">
+                <p class="eyebrow mb-2 sm:mb-4">The Menu</p>
+                <h2
+                  class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight"
+                >
+                  A cup for every mood.
+                </h2>
+              </div>
+              <p class="text-xs sm:text-sm text-cream/60 max-w-xs leading-relaxed">
+                Oat, Almond &amp; Whole Milk available. Decaf Swiss Water Process on request.
+              </p>
             </div>
 
-            <div class="grid md:grid-cols-2 gap-10 sm:gap-14">
+            <div class="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-14">
+              <!-- Espresso Bar -->
               <div>
-                <h3 class="eyebrow mb-6 text-cream/60">Espresso</h3>
-                <ul class="space-y-5">
-                  <li class="menu-row">
-                    <span>Espresso</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.20</span>
+                <div class="flex items-center justify-between mb-5 pb-2 border-b border-white/10">
+                  <h3 class="eyebrow text-cream/90 !tracking-wider">Espresso Bar</h3>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/50">Double Shot Standard</span>
+                </div>
+                <ul class="space-y-5 sm:space-y-6">
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Single Origin Espresso</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.20</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Ethiopian Guji &bull; Jasmine, Peach &amp; Chocolate</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Cappuccino</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.20</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Flat White</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.00</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Silky micro-foam over a rich double ristretto</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Flat White</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.00</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Piccolo / Cortado</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.60</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Equal parts intense espresso and warm textured milk</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Macchiato</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.60</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Cappuccino</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.20</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Dusted with Venezuelan raw cacao</p>
                   </li>
                 </ul>
               </div>
 
+              <!-- Filter & Slow Bar -->
               <div>
-                <h3 class="eyebrow mb-6 text-cream/60">Filter</h3>
-                <ul class="space-y-5">
-                  <li class="menu-row">
-                    <span>V60 Pour Over</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.40</span>
+                <div class="flex items-center justify-between mb-5 pb-2 border-b border-white/10">
+                  <h3 class="eyebrow text-cream/90 !tracking-wider">Filter &amp; Pour Over</h3>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/50">Single Origin Micro-Lots</span>
+                </div>
+                <ul class="space-y-5 sm:space-y-6">
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">V60 Pour Over</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.40</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Colombia Huila Geisha &bull; Bergamot, Lychee &amp; Honey</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Cold Brew</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.50</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">18-Hour Kyoto Cold Brew</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.50</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Slow cold-drip &bull; Dark chocolate, cherry &amp; vanilla</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Batch Filter</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.40</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Batch Filter Reserve</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.40</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Daily rotating harvest &bull; Balanced &amp; sweet</p>
                   </li>
-                  <li class="menu-row">
-                    <span>AeroPress</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.10</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">AeroPress Inverted</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.10</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Kenya Nyeri &bull; Blackcurrant &amp; brown sugar finish</p>
                   </li>
                 </ul>
               </div>
 
+              <!-- Signature Creations -->
               <div>
-                <h3 class="eyebrow mb-6 text-cream/60">Signature</h3>
-                <ul class="space-y-5">
-                  <li class="menu-row">
-                    <span>Signature Latte</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.80</span>
+                <div class="flex items-center justify-between mb-5 pb-2 border-b border-white/10">
+                  <h3 class="eyebrow text-cream/90 !tracking-wider">House Signatures</h3>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/50">Crafted In-House</span>
+                </div>
+                <ul class="space-y-5 sm:space-y-6">
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">The Signature Caramel Latte</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.80</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Double shot, house salted caramel &amp; vanilla bean</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Honey Oat Flat White</span
-                    ><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.90</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Honey Oat Flat White</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.90</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Organic oat milk with raw heather honey &amp; cinnamon</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Maple Cortado</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.60</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Spiced Maple Cortado</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.60</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Vermont amber maple with crushed green cardamom</p>
+                  </li>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Cascara Sparkling Fizz</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.20</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Brewed coffee cherry tea with yuzu soda &amp; thyme</p>
                   </li>
                 </ul>
               </div>
 
+              <!-- Artisan Bakery -->
               <div>
-                <h3 class="eyebrow mb-6 text-cream/60">Pastries</h3>
-                <ul class="space-y-5">
-                  <li class="menu-row">
-                    <span>Almond Croissant</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.80</span>
+                <div class="flex items-center justify-between mb-5 pb-2 border-b border-white/10">
+                  <h3 class="eyebrow text-cream/90 !tracking-wider">Artisan Bakery</h3>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/50">Baked Fresh Daily</span>
+                </div>
+                <ul class="space-y-5 sm:space-y-6">
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Almond Frangipane Croissant</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.80</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Twice-baked with almond cream &amp; toasted flakes</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Pain au Chocolat</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.50</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Swedish Cardamom Bun</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.60</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Hand-twisted brioche with cardamom &amp; pearl sugar</p>
                   </li>
-                  <li class="menu-row">
-                    <span>Cardamom Bun</span><span class="menu-dots"></span
-                    ><span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.60</span>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Pain au Chocolat</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;3.50</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Normandy cultured butter with 70% Valrhona chocolate</p>
+                  </li>
+                  <li>
+                    <div class="menu-row">
+                      <span class="font-medium text-cream">Basque Burnt Cheesecake</span>
+                      <span class="menu-dots"></span>
+                      <span class="text-gold-light font-medium whitespace-nowrap shrink-0">&pound;4.50</span>
+                    </div>
+                    <p class="text-[0.75rem] sm:text-xs text-cream/50 mt-1">Caramelized crust with velvety center &bull; Gluten-free</p>
                   </li>
                 </ul>
               </div>
+            </div>
+
+            <!-- Retail Beans Strip -->
+            <div class="mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+              <div class="text-center sm:text-left">
+                <p class="eyebrow mb-1">Take Aro Home</p>
+                <p class="text-xs sm:text-sm text-cream/80">Freshly roasted whole beans (250g / 1kg) available at the counter.</p>
+              </div>
+              <a href="#club" class="btn-ghost text-xs sm:text-sm py-2 px-5 w-full sm:w-auto text-center whitespace-nowrap">Order Retail Bags</a>
             </div>
           </div>
         </section>
 
         <!-- ============ FEATURED ============ -->
-        <section class="relative py-28 sm:py-40 px-5 sm:px-8">
+        <section id="featured" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
           <div
-            class="max-w-4xl mx-auto glass-panel rounded-3xl p-8 sm:p-16 text-center reveal"
+            class="max-w-4xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
           >
-            <p class="eyebrow mb-5">Today's Feature</p>
+            <span class="badge-chip mb-4 sm:mb-5 inline-block">Barista Selection</span>
             <h2
-              class="font-display font-light text-3xl sm:text-5xl leading-tight mb-6"
+              class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4"
             >
               The Signature Latte
             </h2>
             <p
-              class="text-cream/75 text-base sm:text-lg max-w-md mx-auto leading-relaxed"
+              class="text-cream/80 text-sm sm:text-base lg:text-lg max-w-md mx-auto leading-relaxed mb-5 sm:mb-6"
             >
-              Silky espresso. Velvety milk. A touch of house-made caramel.
+              Two shots of Ethiopian Guji espresso infused with house-simmered Madagascar vanilla and salted muscovado caramel.
             </p>
-            <p class="font-display text-2xl text-gold-light mt-8">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 text-xs sm:text-sm text-cream/60 mb-6 sm:mb-8">
+              <span>Honeycomb &bull; Toffee &bull; Citrus</span>
+              <span class="hidden sm:inline">&bull;</span>
+              <span>Available Hot or Over Ice</span>
+            </div>
+            <p class="font-display text-2xl sm:text-3xl text-gold-light">
               &pound;4.80
             </p>
           </div>
         </section>
 
+        <!-- ============ VISIT & OPENING HOURS ============ -->
+        <section id="visit" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
+          <div class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch">
+            <div class="lg:col-span-6 glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 reveal flex flex-col justify-between">
+              <div>
+                <div class="flex items-center gap-3 mb-5 sm:mb-6">
+                  <span id="liveStatusDot" class="pulse-dot"></span>
+                  <span id="liveStatusText" class="text-xs sm:text-sm font-medium tracking-wide text-cream">Open Now &bull; Closes at 7:00 PM</span>
+                </div>
+
+                <p class="eyebrow mb-2 sm:mb-3">Visit The Café</p>
+                <h2 class="font-display font-light text-2xl sm:text-4xl leading-tight mb-4 sm:mb-6">
+                  14 Mill Lane,<br />London NW6 1NT
+                </h2>
+                <p class="text-cream/75 text-xs sm:text-sm lg:text-base leading-relaxed mb-6">
+                  Located in the heart of the village. Step inside for an unhurried morning cup, afternoon pour over session, or beans for your home setup.
+                </p>
+
+                <div class="space-y-2.5 sm:space-y-3 text-xs sm:text-sm text-cream/80">
+                  <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-cream/60">Monday – Friday</span>
+                    <span class="font-medium">7:00 AM – 7:00 PM</span>
+                  </div>
+                  <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-cream/60">Saturday – Sunday</span>
+                    <span class="font-medium">8:00 AM – 6:00 PM</span>
+                  </div>
+                  <div class="flex justify-between py-2 border-b border-white/10">
+                    <span class="text-cream/60">Bank Holidays</span>
+                    <span class="font-medium">8:00 AM – 5:00 PM</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 sm:mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
+                <a
+                  href="https://maps.google.com/?q=14+Mill+Lane+London"
+                  target="_blank"
+                  rel="noopener"
+                  class="btn-primary text-xs sm:text-sm py-2.5 px-5 text-center"
+                  >Get Directions</a
+                >
+                <a href="tel:+442079460912" class="btn-ghost text-xs sm:text-sm py-2.5 px-5 text-center">+44 20 7946 0912</a>
+              </div>
+            </div>
+
+            <div class="lg:col-span-6 flex flex-col gap-5 sm:gap-6">
+              <!-- Amenities Card -->
+              <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 reveal">
+                <p class="eyebrow mb-4">Café Amenities</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-cream/80">
+                  <div class="flex items-center gap-3">
+                    <span class="text-gold-light">&check;</span>
+                    <span>High-Speed Wi-Fi</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-gold-light">&check;</span>
+                    <span>Pet &amp; Dog Friendly</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-gold-light">&check;</span>
+                    <span>Outdoor Courtyard</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-gold-light">&check;</span>
+                    <span>Plant-Based Options</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-gold-light">&check;</span>
+                    <span>Step-Free Access</span>
+                  </div>
+                  <div class="flex items-center gap-3">
+                    <span class="text-gold-light">&check;</span>
+                    <span>Filter Tasting Flight</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Private Events Card -->
+              <div class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 reveal flex flex-col justify-between flex-1">
+                <div>
+                  <p class="eyebrow mb-2">Cupping &amp; Workshops</p>
+                  <h3 class="font-display text-lg sm:text-xl text-cream mb-2">Weekend Sensory Cupping</h3>
+                  <p class="text-xs sm:text-sm text-cream/70 leading-relaxed">
+                    Join our head roaster every Saturday at 10:00 AM to cup five seasonal origins and learn to identify tasting notes.
+                  </p>
+                </div>
+                <div class="mt-5 sm:mt-6">
+                  <a href="mailto:workshops@aro.coffee" class="text-xs uppercase tracking-widest text-gold-light hover:underline inline-block py-1">Reserve Cupping Spot &rarr;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- ============ REVIEWS ============ -->
-        <section class="relative py-28 sm:py-40 px-5 sm:px-8">
+        <section id="reviews" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
           <div class="max-w-6xl mx-auto">
-            <p class="eyebrow mb-14 sm:mb-20 text-center reveal">
-              What people say
-            </p>
-            <div class="grid md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
-              <blockquote class="glass-card rounded-2xl p-8 flex flex-col justify-between h-full reveal">
-                <p class="font-display text-lg sm:text-xl leading-relaxed mb-6">
-                  &ldquo;The best coffee experience I've had in years.&rdquo;
-                </p>
-                <cite class="not-italic text-sm text-cream/60 tracking-wide"
-                  >&mdash; Sarah M.</cite
-                >
+            <div class="text-center max-w-xl mx-auto mb-10 sm:mb-16 reveal">
+              <p class="eyebrow mb-3 sm:mb-4">Testimonials</p>
+              <h2 class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight">
+                What people say
+              </h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-5 sm:gap-8 items-stretch">
+              <blockquote class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal">
+                <div>
+                  <div class="text-gold-light mb-3 sm:mb-4 text-xs sm:text-sm tracking-widest">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                  <p class="font-display text-base sm:text-xl leading-relaxed mb-5 sm:mb-6">
+                    &ldquo;The single origin V60 here changed how I think about coffee. Clean, floral, and zero bitterness.&rdquo;
+                  </p>
+                </div>
+                <cite class="not-italic text-xs sm:text-sm text-cream/70 tracking-wide border-t border-white/10 pt-4 block">
+                  <strong class="text-cream block font-medium">Sarah M.</strong>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/40">London Coffee Guide</span>
+                </cite>
               </blockquote>
-              <blockquote class="glass-card rounded-2xl p-8 flex flex-col justify-between h-full reveal">
-                <p class="font-display text-lg sm:text-xl leading-relaxed mb-6">
-                  &ldquo;Every visit feels intentional. Slow, warm, and never
-                  rushed.&rdquo;
-                </p>
-                <cite class="not-italic text-sm text-cream/60 tracking-wide"
-                  >&mdash; Daniel K.</cite
-                >
+
+              <blockquote class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal">
+                <div>
+                  <div class="text-gold-light mb-3 sm:mb-4 text-xs sm:text-sm tracking-widest">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                  <p class="font-display text-base sm:text-xl leading-relaxed mb-5 sm:mb-6">
+                    &ldquo;Every visit feels intentional. Warm light, beautiful music, and the best cardamom buns in town.&rdquo;
+                  </p>
+                </div>
+                <cite class="not-italic text-xs sm:text-sm text-cream/70 tracking-wide border-t border-white/10 pt-4 block">
+                  <strong class="text-cream block font-medium">Daniel K.</strong>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/40">Local Architect</span>
+                </cite>
               </blockquote>
-              <blockquote class="glass-card rounded-2xl p-8 flex flex-col justify-between h-full reveal">
-                <p class="font-display text-lg sm:text-xl leading-relaxed mb-6">
-                  &ldquo;A rare place where the coffee is as good as the
-                  room.&rdquo;
-                </p>
-                <cite class="not-italic text-sm text-cream/60 tracking-wide"
-                  >&mdash; Priya R.</cite
-                >
+
+              <blockquote class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal">
+                <div>
+                  <div class="text-gold-light mb-3 sm:mb-4 text-xs sm:text-sm tracking-widest">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                  <p class="font-display text-base sm:text-xl leading-relaxed mb-5 sm:mb-6">
+                    &ldquo;A rare sanctuary where the coffee craft is as exceptional as the architecture. My daily morning stop.&rdquo;
+                  </p>
+                </div>
+                <cite class="not-italic text-xs sm:text-sm text-cream/70 tracking-wide border-t border-white/10 pt-4 block">
+                  <strong class="text-cream block font-medium">Priya R.</strong>
+                  <span class="text-[0.7rem] sm:text-xs text-cream/40">Neighbourhood Regular</span>
+                </cite>
               </blockquote>
             </div>
           </div>
         </section>
 
-        <!-- ============ CTA ============ -->
-        <section class="relative py-32 sm:py-48 px-5 sm:px-8">
-          <div class="max-w-4xl mx-auto text-center reveal">
+        <!-- ============ COFFEE CLUB / NEWSLETTER ============ -->
+        <section id="club" class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8">
+          <div class="max-w-4xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal">
+            <span class="badge-chip mb-4 sm:mb-5 inline-block">Aro Coffee Club</span>
             <h2
-              class="font-display font-light text-4xl sm:text-6xl leading-[0.95] mb-8"
+              class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4"
             >
-              Your next<br />favorite cup<br />is waiting.
+              Fresh roast delivered.<br />Always intentional.
             </h2>
-            <p class="text-cream/75 mb-10">Visit us today.</p>
-            <a href="#contact" class="btn-primary">Find the caf&eacute;</a>
+            <p class="text-cream/75 max-w-md mx-auto mb-6 sm:mb-8 text-xs sm:text-base lg:text-lg leading-relaxed">
+              Join our members circle for 15% off your first whole bean order, early access to limited micro-lots, and monthly brewing guides.
+            </p>
+
+            <form id="newsletterForm" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3 w-full">
+              <input
+                type="email"
+                required
+                placeholder="Enter your email address"
+                class="input-glass text-center sm:text-left"
+                aria-label="Email address"
+              />
+              <button type="submit" class="btn-primary whitespace-nowrap cursor-pointer w-full sm:w-auto">Join Club</button>
+            </form>
+            <p class="text-[0.7rem] sm:text-xs text-cream/40 mt-4">We respect your inbox. Unsubscribe anytime with one click.</p>
           </div>
         </section>
       </main>
@@ -381,24 +799,32 @@
       <!-- ============ FOOTER ============ -->
       <footer
         id="contact"
-        class="relative bg-ink/75 backdrop-blur-lg border-t border-white/10 px-5 sm:px-8 py-16"
+        class="relative bg-ink/90 backdrop-blur-lg border-t border-white/10 px-5 sm:px-8 py-12 sm:py-16"
       >
-        <div class="max-w-7xl mx-auto grid sm:grid-cols-3 gap-10 sm:gap-8">
-          <div>
-            <p class="font-display text-2xl tracking-widest mb-4">ARO.</p>
-            <p class="text-sm text-cream/60 max-w-xs leading-relaxed">
-              A specialty coffee house crafted for the curious.
+        <div class="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-4 gap-8 sm:gap-8">
+          <div class="sm:col-span-2 md:col-span-1">
+            <p class="font-display text-2xl tracking-widest mb-3 sm:mb-4">ARO.</p>
+            <p class="text-xs sm:text-sm text-cream/65 max-w-xs leading-relaxed">
+              A specialty coffee house and micro-roastery crafted for the curious.
             </p>
+            <div class="mt-5 flex items-center gap-3 text-cream/50 text-xs">
+              <span>London, UK</span>
+              <span>&bull;</span>
+              <span>Est. 2026</span>
+            </div>
           </div>
 
-          <div class="flex flex-col gap-3 text-sm">
-            <a href="#story" class="footer-link">Story</a>
-            <a href="#menu" class="footer-link">Menu</a>
-            <a href="#about" class="footer-link">About</a>
-            <a href="#contact" class="footer-link">Contact</a>
+          <div class="flex flex-col gap-2.5 text-xs sm:text-sm">
+            <p class="eyebrow !text-cream/40 mb-1">Navigation</p>
+            <a href="#story" class="footer-link">Our Story</a>
+            <a href="#craft" class="footer-link">The Craft</a>
+            <a href="#menu" class="footer-link">The Menu</a>
+            <a href="#visit" class="footer-link">Visit &amp; Hours</a>
+            <a href="#club" class="footer-link">Coffee Club</a>
           </div>
 
-          <div class="flex flex-col gap-3 text-sm">
+          <div class="flex flex-col gap-2.5 text-xs sm:text-sm">
+            <p class="eyebrow !text-cream/40 mb-1">Connect</p>
             <a
               href="https://instagram.com"
               class="footer-link"
@@ -406,18 +832,46 @@
               rel="noopener"
               >Instagram</a
             >
+            <a
+              href="https://spotify.com"
+              class="footer-link"
+              target="_blank"
+              rel="noopener"
+              >Café Playlist</a
+            >
             <a href="mailto:hello@aro.coffee" class="footer-link"
               >hello@aro.coffee</a
             >
-            <p class="text-cream/60">14 Mill Lane, London</p>
+            <a href="tel:+442079460912" class="footer-link">+44 20 7946 0912</a>
+          </div>
+
+          <div class="flex flex-col gap-2.5 text-xs sm:text-sm">
+            <p class="eyebrow !text-cream/40 mb-1">Location</p>
+            <p class="text-cream/70 leading-relaxed">14 Mill Lane<br />London NW6 1NT</p>
+            <p class="text-[0.7rem] sm:text-xs text-cream/40 mt-1.5">Mon–Fri 7am–7pm<br />Sat–Sun 8am–6pm</p>
           </div>
         </div>
-        <p
-          class="max-w-7xl mx-auto mt-12 pt-8 border-t border-white/10 text-xs text-cream/40 tracking-wide"
-        >
-          &copy; 2026 Aro. Coffee
-        </p>
+
+        <div class="max-w-7xl mx-auto mt-10 pt-6 sm:mt-12 sm:pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-cream/40 tracking-wide text-center sm:text-left">
+          <p>&copy; 2026 Aro. Coffee Roasters Ltd. All rights reserved.</p>
+          <div class="flex items-center gap-6">
+            <a href="#top" class="hover:text-gold-light transition-colors">Privacy Policy</a>
+            <a href="#top" class="hover:text-gold-light transition-colors">Terms of Service</a>
+            <a href="#top" class="hover:text-gold-light transition-colors">Back to top &uarr;</a>
+          </div>
+        </div>
       </footer>
+    </div>
+
+    <!-- ============ TOAST NOTIFICATION CONTAINER ============ -->
+    <div id="toastNotification" class="toast-box glass-panel rounded-2xl p-4 sm:p-5 border border-gold-light/30 shadow-2xl flex items-start gap-3 sm:gap-4">
+      <div class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gold-light/20 text-gold-light flex items-center justify-center shrink-0 mt-0.5 text-xs sm:text-sm font-semibold">
+        &check;
+      </div>
+      <div>
+        <h4 id="toastTitle" class="font-display text-sm sm:text-base text-cream font-medium">Notification</h4>
+        <p id="toastMessage" class="text-xs text-cream/70 mt-0.5 sm:mt-1 leading-relaxed">Message details here.</p>
+      </div>
     </div>
 
     <script src="./js/script.js"></script>
