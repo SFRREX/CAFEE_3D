@@ -5,7 +5,7 @@
      CONFIG
   ========================================================= */
   const FRAME_COUNT = 100;
-  const FRAME_PATH = (i) => `../assets/coffee/frame   (${i}).webp`;
+  const FRAME_PATH = (i) => `./assets/coffee/frame   (${i}).webp`;
   const MAX_DPR = 2;
 
   const canvas = document.getElementById("coffeeCanvas");
