@@ -86,8 +86,13 @@
   }
 
   /* =========================================================
-     DRAW — Cover-style cropping with GPU acceleration
+     DRAW — Cover-style cropping with 3D Parallax & GPU acceleration
   ========================================================= */
+  let mouseX = 0;
+  let mouseY = 0;
+  let targetMouseX = 0;
+  let targetMouseY = 0;
+
   function drawFrame(index, force) {
     index = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(index)));
     if (!force && index === lastDrawnIndex) return;
@@ -111,6 +116,10 @@
       offsetX = 0;
       offsetY = (viewportH - drawH) / 2;
     }
+
+    // Apply smooth 3D mouse parallax offset
+    offsetX += mouseX * 18;
+    offsetY += mouseY * 12;
 
     ctx.fillStyle = "#0b0806";
     ctx.fillRect(0, 0, viewportW, viewportH);
@@ -233,7 +242,7 @@
   }
 
   /* =========================================================
-     SCROLL -> FRAME MAPPING & LERP ANIMATION
+     SCROLL & 3D PARALLAX LERP ANIMATION LOOP
   ========================================================= */
   function getScrollProgress() {
     const scrollHeight =
@@ -250,16 +259,27 @@
   }
 
   function renderLoop() {
-    const diff = targetFrame - displayedFrame;
-    if (Math.abs(diff) < 0.05) {
+    const frameDiff = targetFrame - displayedFrame;
+    const mouseDiffX = targetMouseX - mouseX;
+    const mouseDiffY = targetMouseY - mouseY;
+
+    const frameDone = Math.abs(frameDiff) < 0.04;
+    const mouseDone = Math.abs(mouseDiffX) < 0.005 && Math.abs(mouseDiffY) < 0.005;
+
+    if (frameDone && mouseDone) {
       displayedFrame = targetFrame;
-      drawFrame(displayedFrame, false);
+      mouseX = targetMouseX;
+      mouseY = targetMouseY;
+      drawFrame(displayedFrame, true);
       isAnimating = false;
       return;
     }
 
-    displayedFrame += diff * 0.18;
-    drawFrame(displayedFrame, false);
+    displayedFrame += frameDiff * 0.16;
+    mouseX += mouseDiffX * 0.08;
+    mouseY += mouseDiffY * 0.08;
+
+    drawFrame(displayedFrame, true);
     window.requestAnimationFrame(renderLoop);
   }
 
@@ -268,6 +288,15 @@
     const progress = getScrollProgress();
     targetFrame = progress * (FRAME_COUNT - 1);
     startAnimationLoop();
+  }
+
+  function initCursorParallax() {
+    if (window.matchMedia("(pointer: coarse)").matches || prefersReducedMotion) return;
+    window.addEventListener("mousemove", (e) => {
+      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      startAnimationLoop();
+    }, { passive: true });
   }
 
   /* =========================================================
@@ -531,6 +560,221 @@
   }
 
   /* =========================================================
+     3D CARD TILT PHYSICS & HOVER SPECULAR
+  ========================================================= */
+  function initCardTilt() {
+    if (window.matchMedia("(pointer: coarse)").matches || prefersReducedMotion) return;
+    const cards = document.querySelectorAll("[data-tilt]");
+    cards.forEach((card) => {
+      card.classList.add("tilt-card");
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(6px)`;
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)";
+      });
+    });
+  }
+
+  /* =========================================================
+     MOUSE SPOTLIGHT AMBIENT GLOW
+  ========================================================= */
+  function initMouseGlow() {
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const elements = document.querySelectorAll(".mouse-spotlight");
+    elements.forEach((el) => {
+      el.addEventListener("mousemove", (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        el.style.setProperty("--mouse-x", `${x}px`);
+        el.style.setProperty("--mouse-y", `${y}px`);
+      });
+    });
+  }
+
+  /* =========================================================
+     ANIMATED STATS COUNTER ON SCROLL
+  ========================================================= */
+  function initCounterAnimations() {
+    const counterElements = document.querySelectorAll("[data-counter]");
+    if (!counterElements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const targetVal = parseFloat(el.getAttribute("data-counter"));
+            const suffix = el.getAttribute("data-suffix") || "";
+            const isDecimal = String(targetVal).includes(".");
+            const duration = 1400;
+            const startTime = performance.now();
+
+            function updateCount(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const currentVal = targetVal * easeOut;
+
+              el.textContent = isDecimal
+                ? currentVal.toFixed(1) + suffix
+                : Math.floor(currentVal) + suffix;
+
+              if (progress < 1) {
+                requestAnimationFrame(updateCount);
+              } else {
+                el.textContent = (isDecimal ? targetVal.toFixed(1) : targetVal) + suffix;
+              }
+            }
+
+            requestAnimationFrame(updateCount);
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    counterElements.forEach((el) => observer.observe(el));
+  }
+
+  /* =========================================================
+     INTERACTIVE ORIGIN & ROAST PROFILE EXPLORER
+  ========================================================= */
+  const ORIGINS_DATA = {
+    ethiopia: {
+      name: "Ethiopia Guji Micro-Lot",
+      region: "Oromia, 2,100m ASL",
+      variety: "Heirloom Typica",
+      process: "Washed & Sun-Dried",
+      roast: "Light / Cinnamon",
+      tasting: "Jasmine, White Peach, Bergamot & Wildflower Honey",
+      quote: "Delicate and tea-like with an explosion of floral sweetness.",
+      radar: { floral: 95, acidity: 88, sweetness: 82, body: 45 }
+    },
+    colombia: {
+      name: "Colombia Huila Geisha",
+      region: "San Agustín, 1,950m ASL",
+      variety: "Geisha 100%",
+      process: "Anaerobic Ferment 48h",
+      roast: "Light-Medium",
+      tasting: "Lychee, Bergamot Oil, Candied Lemon & Brown Sugar",
+      quote: "Complex, vibrant, and silky. World-class competition grade.",
+      radar: { floral: 90, acidity: 85, sweetness: 92, body: 60 }
+    },
+    kenya: {
+      name: "Kenya Nyeri Peaberry",
+      region: "Mount Kenya, 1,800m ASL",
+      variety: "SL28 & SL34",
+      process: "Double Washed",
+      roast: "Medium",
+      tasting: "Blackcurrant, Ruby Grapefruit, Cane Sugar & Cacao",
+      quote: "Juicy, intense, and memorable with a mouthwatering acidity.",
+      radar: { floral: 65, acidity: 95, sweetness: 85, body: 70 }
+    },
+    guatemala: {
+      name: "Guatemala Antigua Volcanic",
+      region: "Valley of Antigua, 1,750m ASL",
+      variety: "Bourbon & Caturra",
+      process: "Washed Shade-Grown",
+      roast: "Medium-Dark",
+      tasting: "Dark Chocolate, Roasted Hazelnut, Toffee & Spiced Plum",
+      quote: "Rich, velvety, and deeply comforting for milk espresso drinks.",
+      radar: { floral: 40, acidity: 50, sweetness: 90, body: 95 }
+    }
+  };
+
+  function initOriginExplorer() {
+    const buttons = document.querySelectorAll(".origin-btn");
+    const nameEl = document.getElementById("originName");
+    const regionEl = document.getElementById("originRegion");
+    const varietyEl = document.getElementById("originVariety");
+    const processEl = document.getElementById("originProcess");
+    const roastEl = document.getElementById("originRoast");
+    const tastingEl = document.getElementById("originTasting");
+    const quoteEl = document.getElementById("originQuote");
+    const floralBar = document.getElementById("radarFloral");
+    const acidityBar = document.getElementById("radarAcidity");
+    const sweetnessBar = document.getElementById("radarSweetness");
+    const bodyBar = document.getElementById("radarBody");
+
+    if (!buttons.length || !nameEl) return;
+
+    function applyOrigin(key) {
+      const data = ORIGINS_DATA[key];
+      if (!data) return;
+
+      buttons.forEach((btn) => {
+        if (btn.getAttribute("data-origin") === key) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+
+      if (nameEl) nameEl.textContent = data.name;
+      if (regionEl) regionEl.textContent = data.region;
+      if (varietyEl) varietyEl.textContent = data.variety;
+      if (processEl) processEl.textContent = data.process;
+      if (roastEl) roastEl.textContent = data.roast;
+      if (tastingEl) tastingEl.textContent = data.tasting;
+      if (quoteEl) quoteEl.textContent = `“${data.quote}”`;
+
+      if (floralBar) floralBar.style.width = data.radar.floral + "%";
+      if (acidityBar) acidityBar.style.width = data.radar.acidity + "%";
+      if (sweetnessBar) sweetnessBar.style.width = data.radar.sweetness + "%";
+      if (bodyBar) bodyBar.style.width = data.radar.body + "%";
+    }
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const originKey = btn.getAttribute("data-origin");
+        applyOrigin(originKey);
+      });
+    });
+
+    // Default initialization to ethiopia
+    applyOrigin("ethiopia");
+  }
+
+  /* =========================================================
+     INTERACTIVE MENU CATEGORY FILTER
+  ========================================================= */
+  function initMenuFilters() {
+    const tabs = document.querySelectorAll(".filter-tab");
+    const categories = document.querySelectorAll("[data-menu-category]");
+    if (!tabs.length || !categories.length) return;
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const filter = tab.getAttribute("data-filter");
+
+        tabs.forEach((t) => t.classList.remove("active"));
+        tab.classList.add("active");
+
+        categories.forEach((cat) => {
+          const categoryName = cat.getAttribute("data-menu-category");
+          if (filter === "all" || categoryName === filter) {
+            cat.style.display = "";
+            cat.style.opacity = "1";
+            cat.style.transform = "none";
+          } else {
+            cat.style.display = "none";
+          }
+        });
+      });
+    });
+  }
+
+  /* =========================================================
      INIT
   ========================================================= */
   async function init() {
@@ -541,6 +785,12 @@
     initScrollSpy();
     initNewsletter();
     initLiveStatus();
+    initCursorParallax();
+    initCardTilt();
+    initMouseGlow();
+    initCounterAnimations();
+    initOriginExplorer();
+    initMenuFilters();
 
     // 1. Instant First Frame (<100ms)
     await loadSingleFrame(1);

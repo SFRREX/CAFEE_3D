@@ -157,14 +157,13 @@
           >
 
           <nav
-            class="hidden lg:flex items-center gap-6 xl:gap-8 text-xs xl:text-sm tracking-wider uppercase shrink-0"
+            class="hidden lg:flex items-center gap-5 xl:gap-7 text-xs xl:text-sm tracking-wider uppercase shrink-0"
           >
             <a href="#story" class="nav-link whitespace-nowrap">Story</a>
             <a href="#craft" class="nav-link whitespace-nowrap">Craft</a>
+            <a href="#explorer" class="nav-link whitespace-nowrap">Roasts</a>
             <a href="#menu" class="nav-link whitespace-nowrap">Menu</a>
-            <a href="#visit" class="nav-link whitespace-nowrap"
-              >Visit &amp; Hours</a
-            >
+            <a href="#visit" class="nav-link whitespace-nowrap">Visit</a>
             <a href="#reviews" class="nav-link whitespace-nowrap">Reviews</a>
           </nav>
 
@@ -218,20 +217,24 @@
               <span class="drawer-link-num">02</span>
               <span>The Craft</span>
             </a>
-            <a href="#menu" class="drawer-link">
+            <a href="#explorer" class="drawer-link">
               <span class="drawer-link-num">03</span>
+              <span>Roast Explorer</span>
+            </a>
+            <a href="#menu" class="drawer-link">
+              <span class="drawer-link-num">04</span>
               <span>The Menu</span>
             </a>
             <a href="#visit" class="drawer-link">
-              <span class="drawer-link-num">04</span>
+              <span class="drawer-link-num">05</span>
               <span>Visit &amp; Hours</span>
             </a>
             <a href="#reviews" class="drawer-link">
-              <span class="drawer-link-num">05</span>
+              <span class="drawer-link-num">06</span>
               <span>Testimonials</span>
             </a>
             <a href="#club" class="drawer-link text-gold-light">
-              <span class="drawer-link-num">06</span>
+              <span class="drawer-link-num">07</span>
               <span>Coffee Club</span>
             </a>
           </nav>
@@ -279,7 +282,7 @@
             </div>
 
             <h1
-              class="font-display font-light leading-[0.95] text-4xl sm:text-6xl md:text-7xl lg:text-[6.5rem] tracking-tight reveal drop-shadow-md"
+              class="font-display font-light leading-[0.95] text-4xl sm:text-6xl md:text-7xl lg:text-[6.5rem] tracking-tight reveal drop-shadow-md text-gradient-gold"
             >
               Crafted<br class="hidden sm:block" />
               for the<br class="hidden sm:block" />
@@ -297,8 +300,8 @@
               <a href="#menu" class="btn-primary text-center w-full sm:w-auto"
                 >Explore the menu</a
               >
-              <a href="#craft" class="btn-ghost text-center w-full sm:w-auto"
-                >Our craft &amp; process</a
+              <a href="#explorer" class="btn-ghost text-center w-full sm:w-auto"
+                >Roast Explorer &rarr;</a
               >
             </div>
           </div>
@@ -322,7 +325,7 @@
             class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch"
           >
             <div
-              class="lg:col-span-7 glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 reveal flex flex-col justify-between"
+              class="lg:col-span-7 glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 reveal flex flex-col justify-between"
             >
               <div>
                 <p class="eyebrow mb-3 sm:mb-4">Our Ritual</p>
@@ -360,9 +363,14 @@
 
             <div class="lg:col-span-5 grid grid-cols-2 gap-3.5 sm:gap-6">
               <div
-                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                data-tilt
               >
-                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                <p
+                  class="font-display text-3xl sm:text-5xl text-gold-light"
+                  data-counter="12"
+                  data-suffix="+"
+                >
                   12+
                 </p>
                 <p
@@ -375,24 +383,34 @@
                 </p>
               </div>
               <div
-                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                data-tilt
               >
-                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                <p
+                  class="font-display text-3xl sm:text-5xl text-gold-light"
+                  data-counter="8"
+                  data-suffix=""
+                >
                   8
                 </p>
                 <p
                   class="mt-2 text-xs sm:text-sm text-cream/80 tracking-wide font-medium"
                 >
-                  Profiles
+                  Roast Profiles
                 </p>
                 <p class="mt-1 text-[0.7rem] sm:text-xs text-cream/40">
                   Light to Medium-Dark
                 </p>
               </div>
               <div
-                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                data-tilt
               >
-                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                <p
+                  class="font-display text-3xl sm:text-5xl text-gold-light"
+                  data-counter="100"
+                  data-suffix="%"
+                >
                   100%
                 </p>
                 <p
@@ -405,9 +423,14 @@
                 </p>
               </div>
               <div
-                class="glass-card rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-5 sm:p-7 flex flex-col justify-center reveal"
+                data-tilt
               >
-                <p class="font-display text-3xl sm:text-5xl text-gold-light">
+                <p
+                  class="font-display text-3xl sm:text-5xl text-gold-light"
+                  data-counter="4.9"
+                  data-suffix="★"
+                >
                   4.9★
                 </p>
                 <p
@@ -432,7 +455,7 @@
             <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 reveal">
               <p class="eyebrow mb-3 sm:mb-4">The Process</p>
               <h2
-                class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4"
+                class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4 text-gradient-gold"
               >
                 From Soil to Cup.
               </h2>
@@ -443,7 +466,8 @@
 
             <div class="grid md:grid-cols-3 gap-5 sm:gap-8">
               <div
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal"
+                data-tilt
               >
                 <div>
                   <span
@@ -473,7 +497,8 @@
               </div>
 
               <div
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal"
+                data-tilt
               >
                 <div>
                   <span
@@ -502,7 +527,8 @@
               </div>
 
               <div
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-6 sm:p-8 flex flex-col justify-between reveal"
+                data-tilt
               >
                 <div>
                   <span
@@ -532,21 +558,176 @@
           </div>
         </section>
 
+        <!-- ============ INTERACTIVE ROAST & ORIGIN EXPLORER ============ -->
+        <section
+          id="explorer"
+          class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+        >
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 reveal">
+              <span class="badge-chip mb-3 sm:mb-4 inline-block">Sensory Lab</span>
+              <h2
+                class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4 text-gradient-gold"
+              >
+                Explore Single Origins.
+              </h2>
+              <p class="text-cream/75 text-xs sm:text-sm lg:text-base">
+                Select a micro-lot below to reveal real-time terroir, flavor spectrum, and cupping notes.
+              </p>
+            </div>
+
+            <div class="grid lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
+              <!-- Origin Selector Buttons -->
+              <div class="lg:col-span-5 flex flex-col gap-3 justify-center reveal">
+                <button
+                  type="button"
+                  class="origin-btn active"
+                  data-origin="ethiopia"
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="font-display text-base sm:text-lg text-cream font-medium">Ethiopia Guji</span>
+                    <span class="badge-chip !text-[0.65rem] !py-0.5">Light Roast</span>
+                  </div>
+                  <p class="text-xs text-cream/60 mt-1">Floral &bull; Jasmine &bull; Peach</p>
+                </button>
+
+                <button
+                  type="button"
+                  class="origin-btn"
+                  data-origin="colombia"
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="font-display text-base sm:text-lg text-cream font-medium">Colombia Geisha</span>
+                    <span class="badge-chip !text-[0.65rem] !py-0.5">Competition</span>
+                  </div>
+                  <p class="text-xs text-cream/60 mt-1">Lychee &bull; Bergamot &bull; Honey</p>
+                </button>
+
+                <button
+                  type="button"
+                  class="origin-btn"
+                  data-origin="kenya"
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="font-display text-base sm:text-lg text-cream font-medium">Kenya Peaberry</span>
+                    <span class="badge-chip !text-[0.65rem] !py-0.5">Medium Roast</span>
+                  </div>
+                  <p class="text-xs text-cream/60 mt-1">Blackcurrant &bull; Grapefruit &bull; Cacao</p>
+                </button>
+
+                <button
+                  type="button"
+                  class="origin-btn"
+                  data-origin="guatemala"
+                >
+                  <div class="flex items-center justify-between">
+                    <span class="font-display text-base sm:text-lg text-cream font-medium">Guatemala Volcanic</span>
+                    <span class="badge-chip !text-[0.65rem] !py-0.5">Medium-Dark</span>
+                  </div>
+                  <p class="text-xs text-cream/60 mt-1">Dark Chocolate &bull; Toffee &bull; Hazelnut</p>
+                </button>
+              </div>
+
+              <!-- Interactive Flavor Radar & Details Display -->
+              <div
+                class="lg:col-span-7 glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-10 flex flex-col justify-between reveal"
+                data-tilt
+              >
+                <div>
+                  <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-white/10 mb-6">
+                    <div>
+                      <span class="eyebrow !text-xs !text-gold-light" id="originRoast">Light / Cinnamon</span>
+                      <h3 class="font-display text-xl sm:text-3xl text-cream font-medium mt-1" id="originName">
+                        Ethiopia Guji Micro-Lot
+                      </h3>
+                    </div>
+                    <span class="text-xs text-cream/50 bg-white/5 px-3 py-1.5 rounded-full border border-white/10" id="originRegion">
+                      Oromia, 2,100m ASL
+                    </span>
+                  </div>
+
+                  <p class="italic text-cream/80 text-sm sm:text-base mb-6" id="originQuote">
+                    “Delicate and tea-like with an explosion of floral sweetness.”
+                  </p>
+
+                  <!-- Flavor Spectrum Bars -->
+                  <div class="space-y-4 mb-6">
+                    <div>
+                      <div class="flex justify-between text-xs text-cream/75 mb-1.5 font-medium">
+                        <span>Floral &amp; Aromatic</span>
+                        <span>High</span>
+                      </div>
+                      <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div id="radarFloral" class="flavor-bar-fill" style="width: 95%;"></div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="flex justify-between text-xs text-cream/75 mb-1.5 font-medium">
+                        <span>Citrus Acidity</span>
+                        <span>Bright</span>
+                      </div>
+                      <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div id="radarAcidity" class="flavor-bar-fill" style="width: 88%;"></div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="flex justify-between text-xs text-cream/75 mb-1.5 font-medium">
+                        <span>Honey Sweetness</span>
+                        <span>High</span>
+                      </div>
+                      <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div id="radarSweetness" class="flavor-bar-fill" style="width: 82%;"></div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div class="flex justify-between text-xs text-cream/75 mb-1.5 font-medium">
+                        <span>Body &amp; Mouthfeel</span>
+                        <span>Silky / Tea-like</span>
+                      </div>
+                      <div class="h-2 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div id="radarBody" class="flavor-bar-fill" style="width: 45%;"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pt-5 border-t border-white/10 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs text-cream/70">
+                  <div>
+                    <span class="text-cream/40 block mb-0.5 uppercase tracking-wider text-[0.65rem]">Variety</span>
+                    <span id="originVariety" class="font-medium text-cream">Heirloom Typica</span>
+                  </div>
+                  <div>
+                    <span class="text-cream/40 block mb-0.5 uppercase tracking-wider text-[0.65rem]">Process</span>
+                    <span id="originProcess" class="font-medium text-cream">Washed &amp; Sun-Dried</span>
+                  </div>
+                  <div class="col-span-2 sm:col-span-1">
+                    <span class="text-cream/40 block mb-0.5 uppercase tracking-wider text-[0.65rem]">Tasting Notes</span>
+                    <span id="originTasting" class="font-medium text-gold-light">Jasmine, Peach, Honey</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- ============ MENU ============ -->
         <section
           id="menu"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
         >
           <div
-            class="max-w-6xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-5 sm:p-10 lg:p-14 reveal"
+            class="max-w-6xl mx-auto glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-5 sm:p-10 lg:p-14 reveal"
           >
             <div
-              class="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-14 gap-4 sm:gap-6"
+              class="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-10 gap-4 sm:gap-6"
             >
               <div class="max-w-xl">
                 <p class="eyebrow mb-2 sm:mb-4">The Menu</p>
                 <h2
-                  class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight"
+                  class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight text-gradient-gold"
                 >
                   A cup for every mood.
                 </h2>
@@ -559,9 +740,18 @@
               </p>
             </div>
 
+            <!-- Interactive Category Tabs -->
+            <div class="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 sm:pb-6 mb-6 sm:mb-8 border-b border-white/10">
+              <button type="button" class="filter-tab active" data-filter="all">All Items</button>
+              <button type="button" class="filter-tab" data-filter="espresso">Espresso Bar</button>
+              <button type="button" class="filter-tab" data-filter="filter">Filter &amp; Slow Bar</button>
+              <button type="button" class="filter-tab" data-filter="signature">Signatures</button>
+              <button type="button" class="filter-tab" data-filter="bakery">Artisan Bakery</button>
+            </div>
+
             <div class="grid md:grid-cols-2 gap-8 sm:gap-12 lg:gap-14">
               <!-- Espresso Bar -->
-              <div>
+              <div data-menu-category="espresso">
                 <div
                   class="flex items-center justify-between mb-5 pb-2 border-b border-white/10"
                 >
@@ -633,7 +823,7 @@
               </div>
 
               <!-- Filter & Slow Bar -->
-              <div>
+              <div data-menu-category="filter">
                 <div
                   class="flex items-center justify-between mb-5 pb-2 border-b border-white/10"
                 >
@@ -707,7 +897,7 @@
               </div>
 
               <!-- Signature Creations -->
-              <div>
+              <div data-menu-category="signature">
                 <div
                   class="flex items-center justify-between mb-5 pb-2 border-b border-white/10"
                 >
@@ -783,7 +973,7 @@
               </div>
 
               <!-- Artisan Bakery -->
-              <div>
+              <div data-menu-category="bakery">
                 <div
                   class="flex items-center justify-between mb-5 pb-2 border-b border-white/10"
                 >
@@ -885,13 +1075,14 @@
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
         >
           <div
-            class="max-w-4xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
+            class="max-w-4xl mx-auto glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
+            data-tilt
           >
             <span class="badge-chip mb-4 sm:mb-5 inline-block"
               >Barista Selection</span
             >
             <h2
-              class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4"
+              class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4 text-gradient-gold"
             >
               The Signature Latte
             </h2>
@@ -923,7 +1114,7 @@
             class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch"
           >
             <div
-              class="lg:col-span-6 glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 reveal flex flex-col justify-between"
+              class="lg:col-span-6 glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-10 lg:p-12 reveal flex flex-col justify-between"
             >
               <div>
                 <div class="flex items-center gap-3 mb-5 sm:mb-6">
@@ -937,7 +1128,7 @@
 
                 <p class="eyebrow mb-2 sm:mb-3">Visit The Café</p>
                 <h2
-                  class="font-display font-light text-2xl sm:text-4xl leading-tight mb-4 sm:mb-6"
+                  class="font-display font-light text-2xl sm:text-4xl leading-tight mb-4 sm:mb-6 text-gradient-gold"
                 >
                   14 Mill Lane,<br />London NW6 1NT
                 </h2>
@@ -994,7 +1185,8 @@
             <div class="lg:col-span-6 flex flex-col gap-5 sm:gap-6">
               <!-- Amenities Card -->
               <div
-                class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 reveal"
+                class="glass-card mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-8 reveal"
+                data-tilt
               >
                 <p class="eyebrow mb-4">Café Amenities</p>
                 <div
@@ -1029,7 +1221,8 @@
 
               <!-- Private Events Card -->
               <div
-                class="glass-card rounded-2xl sm:rounded-3xl p-6 sm:p-8 reveal flex flex-col justify-between flex-1"
+                class="glass-card mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-8 reveal flex flex-col justify-between flex-1"
+                data-tilt
               >
                 <div>
                   <p class="eyebrow mb-2">Cupping &amp; Workshops</p>
@@ -1062,7 +1255,7 @@
             <div class="text-center max-w-xl mx-auto mb-10 sm:mb-16 reveal">
               <p class="eyebrow mb-3 sm:mb-4">Testimonials</p>
               <h2
-                class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight"
+                class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight text-gradient-gold"
               >
                 What people say
               </h2>
@@ -1070,7 +1263,8 @@
 
             <div class="grid md:grid-cols-3 gap-5 sm:gap-8 items-stretch">
               <blockquote
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal"
+                data-tilt
               >
                 <div>
                   <div
@@ -1096,7 +1290,8 @@
               </blockquote>
 
               <blockquote
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal"
+                data-tilt
               >
                 <div>
                   <div
@@ -1124,7 +1319,8 @@
               </blockquote>
 
               <blockquote
-                class="glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal"
+                class="glass-card mouse-spotlight rounded-2xl p-6 sm:p-8 flex flex-col justify-between h-full reveal"
+                data-tilt
               >
                 <div>
                   <div
@@ -1159,13 +1355,14 @@
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
         >
           <div
-            class="max-w-4xl mx-auto glass-panel rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
+            class="max-w-4xl mx-auto glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
+            data-tilt
           >
             <span class="badge-chip mb-4 sm:mb-5 inline-block"
               >Aro Coffee Club</span
             >
             <h2
-              class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4"
+              class="font-display font-light text-2xl sm:text-4xl lg:text-5xl leading-tight mb-3 sm:mb-4 text-gradient-gold"
             >
               Fresh roast delivered.<br />Always intentional.
             </h2>
