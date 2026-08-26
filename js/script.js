@@ -11,7 +11,10 @@
 
   const canvas = document.getElementById("coffeeCanvas");
   if (!canvas) return;
-  const ctx = canvas.getContext("2d", { alpha: false });
+  const ctx = canvas.getContext("2d", {
+    alpha: false,
+    desynchronized: true
+  });
 
   const loader = document.getElementById("loader");
   const loaderBar = document.getElementById("loaderBar");
@@ -36,6 +39,14 @@
   let lastDrawnIndex = -1;
   let ready = false;
 
+  /* Keyframe Spine (Every 5th frame = 21 keyframes for instant smooth interaction) */
+  const KEYFRAME_STEP = 5;
+  const KEYFRAMES = [];
+  for (let k = 1; k <= FRAME_COUNT; k += KEYFRAME_STEP) {
+    KEYFRAMES.push(k);
+  }
+  if (!KEYFRAMES.includes(FRAME_COUNT)) KEYFRAMES.push(FRAME_COUNT);
+
   /* =========================================================
      CANVAS SIZE & DPR
   ========================================================= */
@@ -50,6 +61,8 @@
     canvas.style.height = viewportH + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "medium";
     drawFrame(Math.round(displayedFrame), true);
   }
 
@@ -73,7 +86,7 @@
   }
 
   /* =========================================================
-     DRAW — Cover-style cropping
+     DRAW — Cover-style cropping with GPU acceleration
   ========================================================= */
   function drawFrame(index, force) {
     index = Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(index)));
@@ -106,13 +119,60 @@
   }
 
   /* =========================================================
-     PRELOAD IMAGES
+     PROGRESSIVE IMAGE LOADING PIPELINE
   ========================================================= */
-  function preloadImages() {
+  function loadSingleFrame(frameNum) {
     return new Promise((resolve) => {
-      let settled = 0;
-      let hasResolved = false;
+      const idx = frameNum - 1;
+      if (images[idx] && images[idx].complete && images[idx].naturalWidth > 0) {
+        resolve(images[idx]);
+        return;
+      }
 
+      const img = new Image();
+      img.decoding = "async";
+      img.onload = async () => {
+        if ("decode" in img) {
+          try {
+            await img.decode();
+          } catch (_) {}
+        }
+        images[idx] = img;
+        resolve(img);
+      };
+      img.onerror = () => {
+        resolve(null);
+      };
+      img.src = FRAME_PATH(frameNum);
+    });
+  }
+
+  /* Controlled Concurrency Worker Pool */
+  async function loadFramesPool(frameNumbers, maxConcurrency, onProgress) {
+    let cursor = 0;
+    let completed = 0;
+
+    async function worker() {
+      while (cursor < frameNumbers.length) {
+        const currentNum = frameNumbers[cursor++];
+        await loadSingleFrame(currentNum);
+        completed++;
+        if (onProgress) onProgress(completed, frameNumbers.length);
+      }
+    }
+
+    const workers = [];
+    const poolSize = Math.min(maxConcurrency, frameNumbers.length);
+    for (let i = 0; i < poolSize; i++) {
+      workers.push(worker());
+    }
+    await Promise.all(workers);
+  }
+
+  /* Tier 2: Load 21-Keyframe Spine */
+  function loadKeyframeSpine() {
+    return new Promise((resolve) => {
+      let hasResolved = false;
       const finish = () => {
         if (!hasResolved) {
           hasResolved = true;
@@ -120,39 +180,45 @@
         }
       };
 
-      // Safeguard: don't block the site indefinitely on slow network
-      const timeoutId = window.setTimeout(finish, PRELOAD_TIMEOUT_MS);
+      const timer = window.setTimeout(finish, PRELOAD_TIMEOUT_MS);
 
-      const onSettle = (idx) => {
-        settled++;
-        loadedCount = settled;
-        updateLoaderUI();
-
-        // If the initial frame loaded, render it right away
-        if (idx === 1 && lastDrawnIndex === -1) {
-          drawFrame(0, true);
-        }
-
-        if (settled >= FRAME_COUNT) {
-          window.clearTimeout(timeoutId);
+      loadFramesPool(KEYFRAMES, 4, (completed, total) => {
+        updateLoaderUI(completed, total);
+        if (completed >= total) {
+          window.clearTimeout(timer);
           finish();
         }
-      };
-
-      for (let i = 1; i <= FRAME_COUNT; i++) {
-        const img = new Image();
-        img.decoding = "async";
-        img.onload = () => onSettle(i);
-        img.onerror = () => onSettle(i);
-        img.src = FRAME_PATH(i);
-        images[i - 1] = img;
-      }
+      });
     });
   }
 
-  function updateLoaderUI() {
+  /* Tier 3: Idle Progressive Hydration of Remaining 79 Frames */
+  function hydrateRemainingFramesProgressively() {
+    const remaining = [];
+    for (let i = 1; i <= FRAME_COUNT; i++) {
+      if (!KEYFRAMES.includes(i)) {
+        remaining.push(i);
+      }
+    }
+
+    const scheduleNext = () => {
+      if ("requestIdleCallback" in window) {
+        window.requestIdleCallback(() => {
+          loadFramesPool(remaining, 2);
+        }, { timeout: 2000 });
+      } else {
+        window.setTimeout(() => {
+          loadFramesPool(remaining, 2);
+        }, 300);
+      }
+    };
+
+    scheduleNext();
+  }
+
+  function updateLoaderUI(done, total) {
     if (!loaderBar || !loaderPercent) return;
-    const pct = Math.round((loadedCount / FRAME_COUNT) * 100);
+    const pct = Math.min(100, Math.round((done / total) * 100));
     loaderBar.style.width = pct + "%";
     loaderPercent.textContent = pct + "%";
   }
@@ -163,7 +229,7 @@
     loader.style.pointerEvents = "none";
     window.setTimeout(() => {
       loader.style.display = "none";
-    }, 700);
+    }, 600);
   }
 
   /* =========================================================
@@ -476,15 +542,21 @@
     initNewsletter();
     initLiveStatus();
 
-    await preloadImages();
-
-    ready = true;
+    // 1. Instant First Frame (<100ms)
+    await loadSingleFrame(1);
     currentFrame = prefersReducedMotion ? FRAME_COUNT - 1 : 0;
     targetFrame = currentFrame;
     displayedFrame = currentFrame;
     drawFrame(currentFrame, true);
 
+    // 2. Fast Keyframe Spine Loader (21 keyframes)
+    await loadKeyframeSpine();
+
+    ready = true;
     hideLoader();
+
+    // 3. Background Idle Hydration for remaining frames
+    hydrateRemainingFramesProgressively();
 
     if (!prefersReducedMotion) {
       window.addEventListener("scroll", onScroll, { passive: true });
