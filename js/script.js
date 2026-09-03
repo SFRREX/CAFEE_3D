@@ -4,10 +4,10 @@
   /* =========================================================
      CONFIG & CONSTANTS
   ========================================================= */
-  const FRAME_COUNT = 100;
-  const FRAME_PATH = (i) => `./assets/coffee/frame   (${i}).webp`;
+  const FRAME_COUNT = 50;
+  const FRAME_PATH = (i) => `./assets/coffee/frame-${i}.webp`;
   const MAX_DPR = 2;
-  const PRELOAD_TIMEOUT_MS = 4000;
+  const PRELOAD_TIMEOUT_MS = 3500;
 
   const canvas = document.getElementById("coffeeCanvas");
   if (!canvas) return;
@@ -39,8 +39,8 @@
   let lastDrawnIndex = -1;
   let ready = false;
 
-  /* Keyframe Spine (Every 5th frame = 21 keyframes for instant smooth interaction) */
-  const KEYFRAME_STEP = 5;
+  /* Keyframe Spine (Every 4th frame = ~13 keyframes for instant smooth interaction) */
+  const KEYFRAME_STEP = 4;
   const KEYFRAMES = [];
   for (let k = 1; k <= FRAME_COUNT; k += KEYFRAME_STEP) {
     KEYFRAMES.push(k);
@@ -117,12 +117,20 @@
       offsetY = (viewportH - drawH) / 2;
     }
 
-    // Apply smooth 3D mouse parallax offset
-    offsetX += mouseX * 18;
-    offsetY += mouseY * 12;
+    // Apply smooth 3D mouse parallax offset (reduced multipliers for perf)
+    offsetX += mouseX * 12;
+    offsetY += mouseY * 8;
 
-    ctx.fillStyle = "#0b0806";
-    ctx.fillRect(0, 0, viewportW, viewportH);
+    // Only clear if image won't cover the full viewport (perf: skip unnecessary fillRect)
+    const coversViewport =
+      drawW + Math.abs(mouseX * 12) * 2 >= viewportW &&
+      drawH + Math.abs(mouseY * 8) * 2 >= viewportH;
+
+    if (!coversViewport) {
+      ctx.fillStyle = "#0b0806";
+      ctx.fillRect(0, 0, viewportW, viewportH);
+    }
+
     ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
     lastDrawnIndex = index;
   }
@@ -178,7 +186,7 @@
     await Promise.all(workers);
   }
 
-  /* Tier 2: Load 21-Keyframe Spine */
+  /* Tier 2: Load Keyframe Spine */
   function loadKeyframeSpine() {
     return new Promise((resolve) => {
       let hasResolved = false;
@@ -191,7 +199,7 @@
 
       const timer = window.setTimeout(finish, PRELOAD_TIMEOUT_MS);
 
-      loadFramesPool(KEYFRAMES, 4, (completed, total) => {
+      loadFramesPool(KEYFRAMES, 3, (completed, total) => {
         updateLoaderUI(completed, total);
         if (completed >= total) {
           window.clearTimeout(timer);
@@ -201,28 +209,25 @@
     });
   }
 
-  /* Tier 3: Idle Progressive Hydration of Remaining 79 Frames */
+  /* Tier 3: Idle Progressive Hydration of Remaining Frames */
   function hydrateRemainingFramesProgressively() {
+    const keyframeSet = new Set(KEYFRAMES);
     const remaining = [];
     for (let i = 1; i <= FRAME_COUNT; i++) {
-      if (!KEYFRAMES.includes(i)) {
+      if (!keyframeSet.has(i)) {
         remaining.push(i);
       }
     }
 
-    const scheduleNext = () => {
-      if ("requestIdleCallback" in window) {
-        window.requestIdleCallback(() => {
-          loadFramesPool(remaining, 2);
-        }, { timeout: 2000 });
-      } else {
-        window.setTimeout(() => {
-          loadFramesPool(remaining, 2);
-        }, 300);
-      }
-    };
-
-    scheduleNext();
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(() => {
+        loadFramesPool(remaining, 2);
+      }, { timeout: 2500 });
+    } else {
+      window.setTimeout(() => {
+        loadFramesPool(remaining, 2);
+      }, 500);
+    }
   }
 
   function updateLoaderUI(done, total) {
@@ -275,27 +280,39 @@
       return;
     }
 
-    displayedFrame += frameDiff * 0.16;
-    mouseX += mouseDiffX * 0.08;
-    mouseY += mouseDiffY * 0.08;
+    displayedFrame += frameDiff * 0.14;
+    mouseX += mouseDiffX * 0.07;
+    mouseY += mouseDiffY * 0.07;
 
     drawFrame(displayedFrame, true);
     window.requestAnimationFrame(renderLoop);
   }
 
+  /* Throttled scroll handler — one RAF per scroll burst */
+  let scrollQueued = false;
   function onScroll() {
-    if (prefersReducedMotion || !ready) return;
-    const progress = getScrollProgress();
-    targetFrame = progress * (FRAME_COUNT - 1);
-    startAnimationLoop();
+    if (prefersReducedMotion || !ready || scrollQueued) return;
+    scrollQueued = true;
+    window.requestAnimationFrame(() => {
+      scrollQueued = false;
+      const progress = getScrollProgress();
+      targetFrame = progress * (FRAME_COUNT - 1);
+      startAnimationLoop();
+    });
   }
 
   function initCursorParallax() {
     if (window.matchMedia("(pointer: coarse)").matches || prefersReducedMotion) return;
+    let parallaxQueued = false;
     window.addEventListener("mousemove", (e) => {
-      targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
-      targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
-      startAnimationLoop();
+      if (parallaxQueued) return;
+      parallaxQueued = true;
+      window.requestAnimationFrame(() => {
+        parallaxQueued = false;
+        targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        startAnimationLoop();
+      });
     }, { passive: true });
   }
 
@@ -330,12 +347,18 @@
     const header = document.querySelector("header");
     if (!header) return;
 
+    let headerQueued = false;
     function checkHeader() {
-      if (window.scrollY > 25) {
-        header.classList.add("header-scrolled");
-      } else {
-        header.classList.remove("header-scrolled");
-      }
+      if (headerQueued) return;
+      headerQueued = true;
+      window.requestAnimationFrame(() => {
+        headerQueued = false;
+        if (window.scrollY > 25) {
+          header.classList.add("header-scrolled");
+        } else {
+          header.classList.remove("header-scrolled");
+        }
+      });
     }
 
     window.addEventListener("scroll", checkHeader, { passive: true });
@@ -421,32 +444,53 @@
   }
 
   /* =========================================================
-     ACTIVE NAVIGATION (SCROLLSPY)
+     ACTIVE NAVIGATION (SCROLLSPY) — Throttled
   ========================================================= */
   function initScrollSpy() {
     const sections = document.querySelectorAll("section[id], footer[id]");
     const navLinks = document.querySelectorAll(".nav-link, .drawer-link");
     if (!sections.length || !navLinks.length) return;
 
-    function updateActiveLink() {
-      const scrollPos = window.scrollY + 120;
-      let currentId = "";
-
+    // Cache section positions (re-compute on resize)
+    let sectionData = [];
+    function cacheSections() {
+      sectionData = [];
       sections.forEach((section) => {
-        const top = section.offsetTop;
-        const height = section.offsetHeight;
-        if (scrollPos >= top && scrollPos < top + height) {
-          currentId = section.getAttribute("id");
-        }
+        sectionData.push({
+          id: section.getAttribute("id"),
+          top: section.offsetTop,
+          height: section.offsetHeight
+        });
       });
+    }
+    cacheSections();
+    window.addEventListener("resize", cacheSections);
 
-      navLinks.forEach((link) => {
-        const href = link.getAttribute("href");
-        if (href && currentId && href.replace("#", "") === currentId) {
-          link.classList.add("active-nav");
-        } else {
-          link.classList.remove("active-nav");
+    let spyQueued = false;
+    function updateActiveLink() {
+      if (spyQueued) return;
+      spyQueued = true;
+      window.requestAnimationFrame(() => {
+        spyQueued = false;
+        const scrollPos = window.scrollY + 120;
+        let currentId = "";
+
+        for (let i = 0; i < sectionData.length; i++) {
+          const s = sectionData[i];
+          if (scrollPos >= s.top && scrollPos < s.top + s.height) {
+            currentId = s.id;
+            break;
+          }
         }
+
+        navLinks.forEach((link) => {
+          const href = link.getAttribute("href");
+          if (href && currentId && href.replace("#", "") === currentId) {
+            link.classList.add("active-nav");
+          } else {
+            link.classList.remove("active-nav");
+          }
+        });
       });
     }
 
@@ -455,28 +499,80 @@
   }
 
   /* =========================================================
-     REVEAL ON SCROLL
+     REVEAL ON SCROLL + ANIMATED COUNTERS — Single Combined Observer
   ========================================================= */
-  function initReveal() {
-    const targets = document.querySelectorAll(".reveal");
-    if (!("IntersectionObserver" in window) || prefersReducedMotion) {
-      targets.forEach((el) => el.classList.add("is-visible"));
+  function initRevealAndCounters() {
+    const revealTargets = document.querySelectorAll(".reveal");
+    const counterElements = document.querySelectorAll("[data-counter]");
+
+    if (prefersReducedMotion) {
+      revealTargets.forEach((el) => el.classList.add("is-visible"));
+      // Still animate counters even with reduced motion (they're text-only)
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      revealTargets.forEach((el) => el.classList.add("is-visible"));
       return;
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+          if (!entry.isIntersecting) return;
+
+          const el = entry.target;
+
+          // Handle reveal animation
+          if (el.classList.contains("reveal") && !prefersReducedMotion) {
+            el.classList.add("is-visible");
+            // Clean up will-change after animation completes
+            window.setTimeout(() => {
+              el.style.willChange = "auto";
+            }, 800);
+          } else if (el.classList.contains("reveal")) {
+            el.classList.add("is-visible");
           }
+
+          // Handle counter animation
+          if (el.hasAttribute("data-counter")) {
+            const targetVal = parseFloat(el.getAttribute("data-counter"));
+            const suffix = el.getAttribute("data-suffix") || "";
+            const isDecimal = String(targetVal).includes(".");
+            const duration = 1400;
+            const startTime = performance.now();
+
+            function updateCount(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const easeOut = 1 - Math.pow(1 - progress, 3);
+              const currentVal = targetVal * easeOut;
+
+              el.textContent = isDecimal
+                ? currentVal.toFixed(1) + suffix
+                : Math.floor(currentVal) + suffix;
+
+              if (progress < 1) {
+                requestAnimationFrame(updateCount);
+              } else {
+                el.textContent = (isDecimal ? targetVal.toFixed(1) : targetVal) + suffix;
+              }
+            }
+
+            requestAnimationFrame(updateCount);
+          }
+
+          observer.unobserve(el);
         });
       },
       { threshold: 0.05, rootMargin: "0px 0px -15px 0px" }
     );
 
-    targets.forEach((el) => observer.observe(el));
+    revealTargets.forEach((el) => observer.observe(el));
+    counterElements.forEach((el) => {
+      if (!el.classList.contains("reveal")) {
+        observer.observe(el);
+      }
+    });
   }
 
   /* =========================================================
@@ -552,10 +648,10 @@
 
     if (isOpen) {
       statusDot.className = "pulse-dot";
-      statusText.textContent = `Open Now • Closes at ${closeHour > 12 ? closeHour - 12 + ":00 PM" : closeHour + ":00 AM"}`;
+      statusText.textContent = `Open Now \u2022 Closes at ${closeHour > 12 ? closeHour - 12 + ":00 PM" : closeHour + ":00 AM"}`;
     } else {
       statusDot.className = "inline-flex w-2 h-2 rounded-full bg-amber-500/80";
-      statusText.textContent = `Closed • Opens at ${openHour}:00 AM`;
+      statusText.textContent = `Closed \u2022 Opens at ${openHour}:00 AM`;
     }
   }
 
@@ -601,52 +697,6 @@
   }
 
   /* =========================================================
-     ANIMATED STATS COUNTER ON SCROLL
-  ========================================================= */
-  function initCounterAnimations() {
-    const counterElements = document.querySelectorAll("[data-counter]");
-    if (!counterElements.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const el = entry.target;
-            const targetVal = parseFloat(el.getAttribute("data-counter"));
-            const suffix = el.getAttribute("data-suffix") || "";
-            const isDecimal = String(targetVal).includes(".");
-            const duration = 1400;
-            const startTime = performance.now();
-
-            function updateCount(currentTime) {
-              const elapsed = currentTime - startTime;
-              const progress = Math.min(elapsed / duration, 1);
-              const easeOut = 1 - Math.pow(1 - progress, 3);
-              const currentVal = targetVal * easeOut;
-
-              el.textContent = isDecimal
-                ? currentVal.toFixed(1) + suffix
-                : Math.floor(currentVal) + suffix;
-
-              if (progress < 1) {
-                requestAnimationFrame(updateCount);
-              } else {
-                el.textContent = (isDecimal ? targetVal.toFixed(1) : targetVal) + suffix;
-              }
-            }
-
-            requestAnimationFrame(updateCount);
-            observer.unobserve(el);
-          }
-        });
-      },
-      { threshold: 0.25 }
-    );
-
-    counterElements.forEach((el) => observer.observe(el));
-  }
-
-  /* =========================================================
      INTERACTIVE ORIGIN & ROAST PROFILE EXPLORER
   ========================================================= */
   const ORIGINS_DATA = {
@@ -662,7 +712,7 @@
     },
     colombia: {
       name: "Colombia Huila Geisha",
-      region: "San Agustín, 1,950m ASL",
+      region: "San Agust\u00edn, 1,950m ASL",
       variety: "Geisha 100%",
       process: "Anaerobic Ferment 48h",
       roast: "Light-Medium",
@@ -726,7 +776,7 @@
       if (processEl) processEl.textContent = data.process;
       if (roastEl) roastEl.textContent = data.roast;
       if (tastingEl) tastingEl.textContent = data.tasting;
-      if (quoteEl) quoteEl.textContent = `“${data.quote}”`;
+      if (quoteEl) quoteEl.textContent = `\u201C${data.quote}\u201D`;
 
       if (floralBar) floralBar.style.width = data.radar.floral + "%";
       if (acidityBar) acidityBar.style.width = data.radar.acidity + "%";
@@ -781,14 +831,13 @@
     resizeCanvas();
     initMobileMenu();
     initHeaderScroll();
-    initReveal();
+    initRevealAndCounters();
     initScrollSpy();
     initNewsletter();
     initLiveStatus();
     initCursorParallax();
     initCardTilt();
     initMouseGlow();
-    initCounterAnimations();
     initOriginExplorer();
     initMenuFilters();
 
@@ -799,7 +848,7 @@
     displayedFrame = currentFrame;
     drawFrame(currentFrame, true);
 
-    // 2. Fast Keyframe Spine Loader (21 keyframes)
+    // 2. Fast Keyframe Spine Loader
     await loadKeyframeSpine();
 
     ready = true;

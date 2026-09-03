@@ -94,12 +94,22 @@
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d79a5a'%3E%3Cpath d='M2 21h18v-2H2M20 8h-2V5h2m0-2H4v10a4 4 0 004 4h6a4 4 0 004-4v-3h2a2 2 0 002-2V5a2 2 0 00-2-2Z'/%3E%3C/svg%3E"
     />
 
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
+      rel="preload"
+      as="style"
       href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
+      onload="this.onload=null;this.rel='stylesheet'"
     />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
 
     <link rel="stylesheet" href="./src/output.css" />
   </head>
@@ -320,6 +330,7 @@
         <section
           id="story"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 800px"
         >
           <div
             class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch"
@@ -450,6 +461,7 @@
         <section
           id="craft"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 900px"
         >
           <div class="max-w-6xl mx-auto">
             <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-16 reveal">
@@ -562,6 +574,7 @@
         <section
           id="explorer"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 1000px"
         >
           <div class="max-w-6xl mx-auto">
             <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-14 reveal">
@@ -717,6 +730,7 @@
         <section
           id="menu"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 1200px"
         >
           <div
             class="max-w-6xl mx-auto glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-5 sm:p-10 lg:p-14 reveal"
@@ -1073,6 +1087,7 @@
         <section
           id="featured"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 500px"
         >
           <div
             class="max-w-4xl mx-auto glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
@@ -1109,6 +1124,7 @@
         <section
           id="visit"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 900px"
         >
           <div
             class="max-w-6xl mx-auto grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch"
@@ -1250,6 +1266,7 @@
         <section
           id="reviews"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 700px"
         >
           <div class="max-w-6xl mx-auto">
             <div class="text-center max-w-xl mx-auto mb-10 sm:mb-16 reveal">
@@ -1353,6 +1370,7 @@
         <section
           id="club"
           class="relative py-14 sm:py-24 lg:py-32 px-5 sm:px-8"
+          style="content-visibility: auto; contain-intrinsic-size: auto 600px"
         >
           <div
             class="max-w-4xl mx-auto glass-panel mouse-spotlight rounded-2xl sm:rounded-3xl p-6 sm:p-12 lg:p-16 text-center reveal"
@@ -1510,6 +1528,6 @@
       </div>
     </div>
 
-    <script src="./js/script.js"></script>
+    <script defer src="./js/script.js"></script>
   </body>
 </html>
