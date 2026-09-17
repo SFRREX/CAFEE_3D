@@ -1,9 +1,7 @@
 (() => {
   "use strict";
 
-  /* =========================================================
-     CONFIG & CONSTANTS
-  ========================================================= */
+  // Canvas & animation settings
   const FRAME_COUNT = 50;
   const FRAME_PATH = (i) => `./assets/coffee/frame-${i}.webp`;
   const MAX_DPR = 2;
@@ -24,9 +22,7 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-  /* =========================================================
-     STATE
-  ========================================================= */
+  // State
   const images = new Array(FRAME_COUNT);
   let loadedCount = 0;
   let currentFrame = 0;
@@ -39,7 +35,7 @@
   let lastDrawnIndex = -1;
   let ready = false;
 
-  /* Keyframe Spine (Every 4th frame = ~13 keyframes for instant smooth interaction) */
+  // Sample keyframes every 4th frame for initial interactive load
   const KEYFRAME_STEP = 4;
   const KEYFRAMES = [];
   for (let k = 1; k <= FRAME_COUNT; k += KEYFRAME_STEP) {
@@ -47,9 +43,7 @@
   }
   if (!KEYFRAMES.includes(FRAME_COUNT)) KEYFRAMES.push(FRAME_COUNT);
 
-  /* =========================================================
-     CANVAS SIZE & DPR
-  ========================================================= */
+  // Resize canvas to match display DPR
   function resizeCanvas() {
     viewportW = window.innerWidth;
     viewportH = window.innerHeight;
@@ -66,9 +60,7 @@
     drawFrame(Math.round(displayedFrame), true);
   }
 
-  /* =========================================================
-     FIND NEAREST LOADED FRAME
-  ========================================================= */
+  // Fallback to nearest loaded frame if current frame is loading
   function getBestAvailableFrame(index) {
     index = Math.max(0, Math.min(FRAME_COUNT - 1, index));
     const direct = images[index];
@@ -85,9 +77,7 @@
     return null;
   }
 
-  /* =========================================================
-     DRAW — Cover-style cropping with 3D Parallax & GPU acceleration
-  ========================================================= */
+  // Render current frame with cover fit and mouse parallax
   let mouseX = 0;
   let mouseY = 0;
   let targetMouseX = 0;
@@ -135,9 +125,7 @@
     lastDrawnIndex = index;
   }
 
-  /* =========================================================
-     PROGRESSIVE IMAGE LOADING PIPELINE
-  ========================================================= */
+  // Frame loading pipeline
   function loadSingleFrame(frameNum) {
     return new Promise((resolve) => {
       const idx = frameNum - 1;
@@ -164,7 +152,7 @@
     });
   }
 
-  /* Controlled Concurrency Worker Pool */
+  // Limit concurrent frame requests to avoid network saturation
   async function loadFramesPool(frameNumbers, maxConcurrency, onProgress) {
     let cursor = 0;
     let completed = 0;
@@ -209,7 +197,7 @@
     });
   }
 
-  /* Tier 3: Idle Progressive Hydration of Remaining Frames */
+  // Load remaining frames when browser is idle
   function hydrateRemainingFramesProgressively() {
     const keyframeSet = new Set(KEYFRAMES);
     const remaining = [];
@@ -246,9 +234,7 @@
     }, 600);
   }
 
-  /* =========================================================
-     SCROLL & 3D PARALLAX LERP ANIMATION LOOP
-  ========================================================= */
+  // Scroll animation & smooth lerp loop
   function getScrollProgress() {
     const scrollHeight =
       document.documentElement.scrollHeight - window.innerHeight;
@@ -288,7 +274,7 @@
     window.requestAnimationFrame(renderLoop);
   }
 
-  /* Throttled scroll handler — one RAF per scroll burst */
+  // Throttled scroll listener
   let scrollQueued = false;
   function onScroll() {
     if (prefersReducedMotion || !ready || scrollQueued) return;
@@ -316,9 +302,7 @@
     }, { passive: true });
   }
 
-  /* =========================================================
-     RESIZE HANDLER
-  ========================================================= */
+  // Window resize handling
   let resizeQueued = false;
   let lastW = window.innerWidth;
   let lastH = window.innerHeight;
@@ -340,9 +324,7 @@
     });
   }
 
-  /* =========================================================
-     HEADER SCROLL STATE
-  ========================================================= */
+  // Header background change on scroll
   function initHeaderScroll() {
     const header = document.querySelector("header");
     if (!header) return;
@@ -365,9 +347,7 @@
     checkHeader();
   }
 
-  /* =========================================================
-     FULLSCREEN MOBILE DRAWER & ACCESSIBILITY
-  ========================================================= */
+  // Mobile menu drawer
   function initMobileMenu() {
     const toggle = document.getElementById("menuToggle");
     const drawer = document.getElementById("mobileDrawer");
@@ -443,9 +423,7 @@
     });
   }
 
-  /* =========================================================
-     ACTIVE NAVIGATION (SCROLLSPY) — Throttled
-  ========================================================= */
+  // Active section scrollspy
   function initScrollSpy() {
     const sections = document.querySelectorAll("section[id], footer[id]");
     const navLinks = document.querySelectorAll(".nav-link, .drawer-link");
@@ -498,9 +476,7 @@
     updateActiveLink();
   }
 
-  /* =========================================================
-     REVEAL ON SCROLL + ANIMATED COUNTERS — Single Combined Observer
-  ========================================================= */
+  // Scroll reveal animations & stat counters
   function initRevealAndCounters() {
     const revealTargets = document.querySelectorAll(".reveal");
     const counterElements = document.querySelectorAll("[data-counter]");
@@ -575,9 +551,7 @@
     });
   }
 
-  /* =========================================================
-     TOAST NOTIFICATIONS
-  ========================================================= */
+  // Toast notification helper
   function showToast(title, message, duration = 4000) {
     let toast = document.getElementById("toastNotification");
     if (!toast) return;
@@ -599,9 +573,7 @@
     }, duration);
   }
 
-  /* =========================================================
-     NEWSLETTER FORM
-  ========================================================= */
+  // Newsletter subscription form
   function initNewsletter() {
     const form = document.getElementById("newsletterForm");
     if (!form) return;
@@ -628,9 +600,7 @@
     });
   }
 
-  /* =========================================================
-     LIVE CAFÉ OPEN / CLOSED STATUS
-  ========================================================= */
+  // Live opening hours checker
   function initLiveStatus() {
     const statusText = document.getElementById("liveStatusText");
     const statusDot = document.getElementById("liveStatusDot");
@@ -655,9 +625,7 @@
     }
   }
 
-  /* =========================================================
-     3D CARD TILT PHYSICS & HOVER SPECULAR
-  ========================================================= */
+  // 3D card tilt effect
   function initCardTilt() {
     if (window.matchMedia("(pointer: coarse)").matches || prefersReducedMotion) return;
     const cards = document.querySelectorAll("[data-tilt]");
@@ -679,9 +647,7 @@
     });
   }
 
-  /* =========================================================
-     MOUSE SPOTLIGHT AMBIENT GLOW
-  ========================================================= */
+  // Ambient mouse spotlight glow
   function initMouseGlow() {
     if (window.matchMedia("(pointer: coarse)").matches) return;
     const elements = document.querySelectorAll(".mouse-spotlight");
@@ -696,9 +662,7 @@
     });
   }
 
-  /* =========================================================
-     INTERACTIVE ORIGIN & ROAST PROFILE EXPLORER
-  ========================================================= */
+  // Roast profile interactive filter
   const ORIGINS_DATA = {
     ethiopia: {
       name: "Ethiopia Guji Micro-Lot",
@@ -795,9 +759,7 @@
     applyOrigin("ethiopia");
   }
 
-  /* =========================================================
-     INTERACTIVE MENU CATEGORY FILTER
-  ========================================================= */
+  // Menu category filter tabs
   function initMenuFilters() {
     const tabs = document.querySelectorAll(".filter-tab");
     const categories = document.querySelectorAll("[data-menu-category]");
@@ -824,9 +786,7 @@
     });
   }
 
-  /* =========================================================
-     INIT
-  ========================================================= */
+  // Initialize app
   async function init() {
     resizeCanvas();
     initMobileMenu();

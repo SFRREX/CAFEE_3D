@@ -1,9 +1,13 @@
 {
+  "name": "cafee-3d",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./src/output.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./src/output.css --watch"
+  },
   "dependencies": {
     "@tailwindcss/cli": "^4.3.3",
     "tailwindcss": "^4.3.3"
-  },
-  "allowScripts": {
-    "@parcel/watcher@2.5.1": true
   }
 }
