@@ -395,14 +395,7 @@
           const target = document.querySelector(href);
           if (target) {
             e.preventDefault();
-            const headerOffset = 70;
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({
-              top: offsetPosition,
-              behavior: "smooth"
-            });
+            target.scrollIntoView({ behavior: "smooth" });
           }
         }
       });
@@ -600,13 +593,38 @@
     });
   }
 
-  // Live opening hours checker
+  // Footer policy modal triggers
+  function initLegalLinks() {
+    const privacyBtn = document.getElementById("privacyBtn");
+    if (privacyBtn) {
+      privacyBtn.addEventListener("click", () => {
+        showToast(
+          "Privacy Policy",
+          "We respect your privacy. We never sell your data and only use your email for coffee club newsletters."
+        );
+      });
+    }
+
+    const termsBtn = document.getElementById("termsBtn");
+    if (termsBtn) {
+      termsBtn.addEventListener("click", () => {
+        showToast(
+          "Terms of Service",
+          "Welcome to Aro. All content, imagery, and coffee recipes are copyright 2026 Aro Coffee Roasters."
+        );
+      });
+    }
+  }
+
+  // Live opening hours checker (evaluated in London local time)
   function initLiveStatus() {
     const statusText = document.getElementById("liveStatusText");
     const statusDot = document.getElementById("liveStatusDot");
     if (!statusText || !statusDot) return;
 
-    const now = new Date();
+    // Get current time in Europe/London
+    const londonDateStr = new Date().toLocaleString("en-US", { timeZone: "Europe/London" });
+    const now = new Date(londonDateStr);
     const day = now.getDay(); // 0 = Sun, 6 = Sat
     const hour = now.getHours();
     const isWeekend = day === 0 || day === 6;
@@ -794,6 +812,7 @@
     initRevealAndCounters();
     initScrollSpy();
     initNewsletter();
+    initLegalLinks();
     initLiveStatus();
     initCursorParallax();
     initCardTilt();
